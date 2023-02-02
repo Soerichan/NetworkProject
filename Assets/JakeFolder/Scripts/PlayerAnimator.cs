@@ -40,37 +40,37 @@ public class PlayerAnimator : MonoBehaviour
 
     public void Punch()
     {
-        m_animator.SetTrigger("bPunch");
+        m_animator.SetTrigger("tPunch");
        
     }
 
     public void Dropkick()
     {
-        m_animator.SetTrigger("bDropkick");
+        m_animator.SetTrigger("tDropkick");
        
     }
 
     public void Dizzy()
     {
-        m_animator.SetTrigger("bDizzy");
+        m_animator.SetTrigger("tDizzy");
         
     }
 
     public void Down()
     {
-        m_animator.SetTrigger("bDown");
+        m_animator.SetTrigger("tDown");
         
     }
 
     public void Recover()
     {
-        m_animator.SetTrigger("bRecover");
+        m_animator.SetTrigger("tRecover");
         
     }
 
     public void Idle()
     {
-        m_animator.SetTrigger("bIdle");
+        m_animator.SetTrigger("tIdle");
     }
 
    

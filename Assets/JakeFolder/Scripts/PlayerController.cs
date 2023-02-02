@@ -24,6 +24,9 @@ public class PlayerController : MonoBehaviour//Pun
     [SerializeField]
     public float m_fRecoverTime;
 
+    public bool m_bPunch;
+    public bool m_bDropKick;
+
     State m_state = State.Idle;
 
     private Coroutine m_coroutinePunch;
@@ -51,6 +54,7 @@ public class PlayerController : MonoBehaviour//Pun
        switch(m_state)
         {
             case State.Idle:
+
                 Accelate();
                 Rotate();
                 Idle();
@@ -82,14 +86,14 @@ public class PlayerController : MonoBehaviour//Pun
                 Accelate();
                 Rotate();
                 Idle();
-              //  Punch();
-              // Dropkick();
+                //Punch();
+                //Dropkick();
                 break;
         }
        
     }
 
-    private void Accelate()
+    public void Accelate()
     {
         float vInput = Input.GetAxis("Vertical");
 
@@ -100,25 +104,31 @@ public class PlayerController : MonoBehaviour//Pun
 
     }
 
-    private void Rotate()
+    public void Rotate()
     {
         float hInput = Input.GetAxis("Horizontal");
 
         m_player.Rotate(hInput);
     }
 
-    private void Punch()
+    public void Punch()
     {
-        m_playerAnimator.Punch();
-        m_state=State.Punch;
-        m_coroutinePunch = StartCoroutine(PunchToIdle());
+       
+            m_playerAnimator.Punch();
+            m_state = State.Punch;
+            m_coroutinePunch = StartCoroutine(PunchToIdle());
+            m_bPunch = false;
+        
     }
 
-    private void Dropkick()
+    public void Dropkick()
     {
-        m_playerAnimator.Dropkick();
-        m_state=State.Dropkick;
-        m_coroutineDropkick = StartCoroutine(DropkickToIdle());
+        
+            m_playerAnimator.Dropkick();
+            m_state = State.Dropkick;
+            m_coroutineDropkick = StartCoroutine(DropkickToIdle());
+            m_bDropKick = false;
+        
     }
 
     public void Dizzy()
@@ -135,14 +145,14 @@ public class PlayerController : MonoBehaviour//Pun
         m_coroutineDown = StartCoroutine(DownToIdle());
     }
 
-    private void Recover()
+    public void Recover()
     {
         m_playerAnimator.Recover();
         m_state=State.Recover;
         m_coroutineRecover = StartCoroutine(RecoverToIdle());
     }
 
-    private void Idle()
+    public void Idle()
     {
         if(m_player.m_rigidbody.velocity==new Vector3(0,0,0))
         {

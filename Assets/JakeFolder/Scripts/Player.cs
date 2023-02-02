@@ -40,6 +40,25 @@ public class Player : MonoBehaviour//Pun, IPunObservable
         }
     }
 
+    public void Move(Vector2 InputDir)
+    {
+        Vector2 moveInput = InputDir;
+
+        bool isMove = moveInput.sqrMagnitude != 0;
+
+        if (true == isMove)
+        {
+
+            Vector3 fowardVec = new Vector3(Camera.main.transform.forward.x, 0f, Camera.main.transform.forward.z).normalized;
+            Vector3 rightVec = new Vector3(Camera.main.transform.right.x, 0f, Camera.main.transform.right.z).normalized;
+            Vector3 moveVec = fowardVec * moveInput.y + rightVec * moveInput.x;
+            m_rigidbody.AddForce(moveVec * m_fMovePower * Time.deltaTime);
+            transform.forward = moveVec.normalized;
+           
+        }
+       
+    }
+
     public void Rotate(float speed)
     {
         transform.Rotate(Vector3.up, speed * m_fRotateSpeed * Time.deltaTime);
