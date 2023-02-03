@@ -10,6 +10,7 @@ public class PlayerAnimator : MonoBehaviour
     private Player m_player;
     private Animator m_animator;
     
+    
 
     private float m_x;
     private float m_y;
@@ -27,6 +28,8 @@ public class PlayerAnimator : MonoBehaviour
        
     }
 
+
+
     public void Move()
     {
         
@@ -40,37 +43,46 @@ public class PlayerAnimator : MonoBehaviour
 
     public void Punch()
     {
+        m_animator.SetBool("bIdle", false);
         m_animator.SetTrigger("tPunch");
        
     }
 
     public void Dropkick()
     {
+        m_animator.SetBool("bIdle", false);
         m_animator.SetTrigger("tDropkick");
        
     }
 
     public void Dizzy()
     {
+        m_animator.SetBool("bIdle", false);
         m_animator.SetTrigger("tDizzy");
         
     }
 
     public void Down()
     {
+        m_animator.SetBool("bIdle", false);
         m_animator.SetTrigger("tDown");
         
     }
 
     public void Recover()
     {
+        m_animator.SetBool("bIdle", false);
         m_animator.SetTrigger("tRecover");
         
     }
 
     public void Idle()
     {
-        m_animator.SetTrigger("tIdle");
+       
+        m_animator.SetBool("bIdle",true);
+        
+
+       
     }
 
    
