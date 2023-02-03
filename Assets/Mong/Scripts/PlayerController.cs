@@ -42,11 +42,9 @@ public class PlayerController : MonoBehaviour
         if (collision.collider.tag == "Player")
         {
             particle.Play();
-            Debug.Log("利焙何碟塞");
         }
         else
         {
-            Debug.Log("利焙救何碟塞");
             particle.Clear();
         }
     }

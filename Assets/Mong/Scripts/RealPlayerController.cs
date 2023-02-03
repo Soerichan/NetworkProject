@@ -35,12 +35,10 @@ public class RealPlayerController : MonoBehaviour
         if (collision.collider.tag == "Enemy")
         {
             particle.Play();
-            Debug.Log("¾Æ±ººÎµúÈû");
         }
         else
         { 
             particle.Stop();
-            Debug.Log("¾Æ±º¾ÈºÎµúÈû");
         }
     }
 
