@@ -15,6 +15,14 @@ public class PlayerController : MonoBehaviour//Pun
     private PlayerAnimator m_playerAnimator;
 
     [SerializeField]
+    public float m_fMaxHP;
+    [SerializeField]
+    private float m_fNowHP;
+    [SerializeField]
+    public float m_fHPRegen;
+    
+
+    [SerializeField]
     public float m_fPuchTime;
     [SerializeField]
     public float m_fDropkickTime;
@@ -30,9 +38,15 @@ public class PlayerController : MonoBehaviour//Pun
     public float m_fPunchRange;
     [SerializeField]
     public float m_fPunchAngle;
+    [SerializeField]
+    public float m_fPunchPower;
 
     [SerializeField]
     public float m_fDropkickRange;
+    [SerializeField]
+    public float m_fDropkickAngle;
+    [SerializeField]
+    public float m_fDropkickPower;
 
 
 
@@ -43,6 +57,7 @@ public class PlayerController : MonoBehaviour//Pun
     private Coroutine m_coroutineDizzy;
     private Coroutine m_coroutineDown;
     private Coroutine m_coroutineRecover;
+    private Coroutine m_coroutineHPRegen;
 
     private LayerMask m_maskPlayer;
     private PlayerController m_playerOpponent;
@@ -57,8 +72,12 @@ public class PlayerController : MonoBehaviour//Pun
 
     private void Start()
     {
+        m_fNowHP = m_fMaxHP;
         //if (!photonView.IsMine)
-         //   Destroy(this);
+        //   Destroy(this);
+
+        //나중에 게임스타트로 옮기기
+        m_coroutineHPRegen = StartCoroutine(HPRegen());
          
     }
     private void Update()
@@ -70,9 +89,7 @@ public class PlayerController : MonoBehaviour//Pun
 
                 Accelate();
                 Rotate();
-               // Idle();
-               // Punch();
-               // Dropkick();
+              
                 break;
 
             case State.Punch:
@@ -98,9 +115,7 @@ public class PlayerController : MonoBehaviour//Pun
             case State.Run:
                 Accelate();
                 Rotate();
-               // Idle();
-                //Punch();
-                //Dropkick();
+               
                 break;
         }
        
@@ -131,7 +146,7 @@ public class PlayerController : MonoBehaviour//Pun
             m_state = State.Punch;
             m_coroutinePunch = StartCoroutine(PunchToIdle());
              PunchJudgment();
-            Debug.Log("펀치");
+       
             
         
     }
@@ -141,16 +156,16 @@ public class PlayerController : MonoBehaviour//Pun
         // 1. 범위내에 있는가
         Collider[] colliders = Physics.OverlapSphere(transform.position, m_fPunchRange,m_maskPlayer);
 
-        Debug.Log("펀치저지먼트");
+       
 
         for (int i = 0; i < colliders.Length; i++)
         {
-            Debug.Log("포문");
+            
             m_playerOpponent = colliders[i].GetComponent<PlayerController>();
 
             if (m_playerOpponent != this&&m_playerOpponent.m_fTeamNumber!=this.m_fTeamNumber)
             {
-                Debug.Log("이프문");
+               
                 break;
             }
         }
@@ -162,7 +177,7 @@ public class PlayerController : MonoBehaviour//Pun
             if (Vector3.Dot(transform.forward, dirToTarget) > Mathf.Cos(m_fPunchAngle * 0.5f * Mathf.Deg2Rad))
              {
             
-            m_playerOpponent.Punched();
+            m_playerOpponent.Punched(dirToTarget);
              }
 
           
@@ -170,10 +185,12 @@ public class PlayerController : MonoBehaviour//Pun
     }
 
 
-    public void Punched()
+    public void Punched(Vector3 vec)
     {
+      
         Dizzy();
-        
+        Hurt();
+        m_player.m_rigidbody.AddForce(vec*m_fPunchPower, ForceMode.Impulse);
     }
 
 
@@ -185,7 +202,47 @@ public class PlayerController : MonoBehaviour//Pun
             m_playerAnimator.Dropkick();
             m_state = State.Dropkick;
             m_coroutineDropkick = StartCoroutine(DropkickToIdle());
-          
+            DropkickJubgment();
+
+
+    }
+
+    public void DropkickJubgment()
+    {
+        // 1. 범위내에 있는가
+        Collider[] colliders = Physics.OverlapSphere(transform.position, m_fDropkickRange, m_maskPlayer);
+
+        
+
+        for (int i = 0; i < colliders.Length; i++)
+        {
+           
+            m_playerOpponent = colliders[i].GetComponent<PlayerController>();
+
+            if (m_playerOpponent != this && m_playerOpponent.m_fTeamNumber != this.m_fTeamNumber)
+            {
+               
+                break;
+            }
+        }
+
+
+        Vector3 dirToTarget = (m_playerOpponent.transform.position - transform.position).normalized;
+
+        // 2. 각도내에 있는가
+        if (Vector3.Dot(transform.forward, dirToTarget) > Mathf.Cos(m_fDropkickAngle * 0.5f * Mathf.Deg2Rad))
+        {
+
+            m_playerOpponent.Dropkicked(dirToTarget);
+        }
+    }
+
+    public void Dropkicked(Vector3 vec)
+    {
+        Down();
+        Hurt();
+        transform.forward = -vec;
+        m_player.m_rigidbody.AddForce(vec * m_fDropkickPower, ForceMode.Impulse);
     }
 
     public void Dizzy()
@@ -196,7 +253,7 @@ public class PlayerController : MonoBehaviour//Pun
         m_state=State.Dizzy;
 
         }
-        Debug.Log("디지");
+        
         m_playerAnimator.Dizzy();
     }
 
@@ -261,6 +318,38 @@ public class PlayerController : MonoBehaviour//Pun
         m_state = State.Idle;
         m_playerAnimator.Idle();
     }
+
+    private IEnumerator KnockbackPunch()
+    {
+        yield return new WaitForSeconds(0.3f);
+    }
+
+    private IEnumerator KnockbackDropkick()
+    {
+        yield return new WaitForSeconds(1f);
+    }
+
+
+    private void Hurt()
+    {
+        if (m_fNowHP > 2)
+        {
+            m_fNowHP--;
+            m_player.m_fMaxSpeed = m_player.m_fMaxSpeed * (m_fNowHP/m_fMaxHP);
+
+                //나중에 게임엔드에서 맥스스피드를 맥스스피드카피로 복구
+        }
+    }
+    private IEnumerator HPRegen()
+    {
+        yield return new WaitForSeconds(4f);
+
+        if(m_fNowHP<m_fMaxHP)
+        {
+            m_fNowHP++;
+        }
+    }
+
 
     private void OnDrawGizmos()
     {

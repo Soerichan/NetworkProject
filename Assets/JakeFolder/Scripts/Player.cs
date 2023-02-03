@@ -14,6 +14,7 @@ public class Player : MonoBehaviour//Pun, IPunObservable
     public float m_fRotateSpeed;
     [SerializeField]
     public float m_fMaxSpeed;
+    public float m_fMaxSpeedCopy;
     [SerializeField]
     public float m_fResistance;
 
@@ -22,6 +23,7 @@ public class Player : MonoBehaviour//Pun, IPunObservable
     private void Awake()
     {
         m_rigidbody = GetComponent<Rigidbody>();
+        m_fMaxSpeedCopy = m_fMaxSpeed;
     }
 
     public void Accelate(float power)
