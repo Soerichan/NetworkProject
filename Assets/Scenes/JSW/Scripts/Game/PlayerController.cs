@@ -1,24 +1,30 @@
+using Cinemachine;
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
 using UnityEngine;
 
-[RequireComponent(typeof(SpaceShip))]
+[RequireComponent(typeof(DoggyMan))]
 public class PlayerController : MonoBehaviourPun
 {
-	private SpaceShip spaceShip;
-
+	private DoggyMan Doggy;
+	private CinemachineVirtualCamera camera;
 	private void Awake()
 	{
-		spaceShip = GetComponent<SpaceShip>();
+		Doggy = GetComponent<DoggyMan>();
+		camera = GameObject.Find("vcam1").GetComponent<CinemachineVirtualCamera>();
 	}
 
 	public void Start()
 	{
-		foreach (Renderer r in GetComponentsInChildren<Renderer>())
+		//foreach (Renderer r in GetComponentsInChildren<Renderer>())
+		//{
+		//	r.material.color = GameData.GetColor(photonView.Owner.GetPlayerNumber());
+		//}
+		if (photonView.IsMine)
 		{
-			r.material.color = GameData.GetColor(photonView.Owner.GetPlayerNumber());
+			camera.LookAt=this.transform;
+			camera.Follow=this.transform;
 		}
-
 		if (!photonView.IsMine)
 			Destroy(this);
 	}
@@ -34,7 +40,7 @@ public class PlayerController : MonoBehaviourPun
 	{
 		float vInput = Input.GetAxis("Vertical");
 
-		spaceShip.Accelate(vInput);
+		Doggy.Accelate(vInput);
 		
 	}
 
@@ -42,12 +48,12 @@ public class PlayerController : MonoBehaviourPun
 	{
 		float hInput = Input.GetAxis("Horizontal");
 
-		spaceShip.Rotate(hInput);
+		Doggy.Rotate(hInput);
 	}
 
 	private void Fire()
 	{
 		if (Input.GetButtonDown("Fire1"))
-			spaceShip.Fire();
+			Doggy.Fire();
 	}
 }

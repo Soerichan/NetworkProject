@@ -60,8 +60,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 			{ GameData.PLAYER_LOAD, false }
 		};
 		PhotonNetwork.LocalPlayer.SetCustomProperties(props);
-
-		roomPanel.UpdateRoomState();
+        PhotonNetwork.AutomaticallySyncScene = true;
+        roomPanel.UpdateRoomState();
 	}
 
 	public override void OnLeftRoom()

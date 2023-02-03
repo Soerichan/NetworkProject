@@ -2,10 +2,11 @@ using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class SpaceShip : MonoBehaviourPun, IPunObservable
+public class DoggyMan : MonoBehaviourPun, IPunObservable
 {
 	private Rigidbody rigid;
 
@@ -20,16 +21,21 @@ public class SpaceShip : MonoBehaviourPun, IPunObservable
 	private Bullet bulletPrefab;
 
 	[SerializeField]
+	private TMP_Text tmpName;
+
+    [SerializeField]
 	private int bulletCount;
 
 	private void Awake()
 	{
 		rigid = GetComponent<Rigidbody>();
+		tmpName.text = PhotonNetwork.PlayerList.ToString();
 	}
 
 	private void Update()
 	{
 		CheckExitScreen();
+		tmpName.transform.rotation=Camera.main.transform.rotation;
 	}
 
 	public void Accelate(float power)

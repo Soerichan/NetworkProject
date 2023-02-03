@@ -41,8 +41,8 @@ public class RoomPanel : MonoBehaviour
 		foreach (Player player in PhotonNetwork.PlayerList)
 		{
 			PlayerEntry entry;
-
-            if (PhotonNetwork.CurrentRoom.PlayerCount * 0.5>PhotonNetwork.LocalPlayer.GetPlayerNumber()) 
+			
+            if (player.GetPlayerNumber()%2==0) 
 			{
                 entry = Instantiate(playerEntryPrefab, playerRedContent);
             }
@@ -50,6 +50,7 @@ public class RoomPanel : MonoBehaviour
 			{
                 entry = Instantiate(playerEntryPrefab, playerBlueContent);
             }
+			//플레이어 겟플레이어 넘버로 조절 해볼것?
 			//PlayerEntry entry = Instantiate(playerEntryPrefab, playerContent);
 			entry.Initailize(player.ActorNumber, player.NickName);
 			object isPlayerReady;
@@ -92,21 +93,27 @@ public class RoomPanel : MonoBehaviour
 	{
 		PhotonNetwork.CurrentRoom.IsOpen = false;
 		PhotonNetwork.CurrentRoom.IsVisible = false;
-		PhotonNetwork.AutomaticallySyncScene = true;
+		
 
 		PhotonNetwork.LoadLevel("JswGameScene");
 	}
 	public void OnShuffleButtonClicked()
 	{
 		int maxPlayer = PhotonNetwork.CurrentRoom.PlayerCount;
-        Player a;
+		int container;
+		int[] ints= new int[maxPlayer];
+		for (int i = 0; i < maxPlayer; i++)
+		{ ints[i] = i; }
         for (int i = 0; i < maxPlayer; i++)
         {
-            a = PhotonNetwork.CurrentRoom.Players[i];
+            container = ints[i];
             int randomIndex = Random.Range(i, maxPlayer);
-			PhotonNetwork.CurrentRoom.Players[i] = PhotonNetwork.CurrentRoom.Players[randomIndex];
-			PhotonNetwork.CurrentRoom.Players[randomIndex] = a;
+            ints[i] = ints[randomIndex];
+            ints[randomIndex] = container;
         }
+        for (int i = 0; i < maxPlayer; i++)
+        { PhotonNetwork.CurrentRoom.GetPlayer(i).SetPlayerNumber(ints[i]); }
+        UpdateRoomState();
         
     }
     public void OnLeaveRoomClicked()

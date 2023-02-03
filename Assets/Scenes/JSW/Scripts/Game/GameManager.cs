@@ -6,13 +6,15 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 using UnityEngine.SceneManagement;
 using System.Collections;
 using TMPro;
+
 using UnityEngine.UIElements;
+using Cinemachine;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
 	[SerializeField]
 	private TMP_Text infoText;
-
+	
 	private void Start()
 	{
 		if (PhotonNetwork.InRoom)
@@ -80,15 +82,21 @@ public class GameManager : MonoBehaviourPunCallbacks
 
 	private void GameStart()
 	{
+		
 		float angularStart = (360.0f / PhotonNetwork.CurrentRoom.PlayerCount) * PhotonNetwork.LocalPlayer.GetPlayerNumber();
 		float x = 20.0f * Mathf.Sin(angularStart * Mathf.Deg2Rad);
 		float z = 20.0f * Mathf.Cos(angularStart * Mathf.Deg2Rad);
 		Vector3 position = new Vector3(x, 0.0f, z);
 		Quaternion rotation = Quaternion.Euler(0.0f, angularStart, 0.0f);
-		if(PhotonNetwork.LocalPlayer.GetPlayerNumber() < PhotonNetwork.CurrentRoom.PlayerCount*0.5)
-	        PhotonNetwork.Instantiate("PlayerRedTeam", position, rotation, 0);
+		if (PhotonNetwork.LocalPlayer.GetPlayerNumber() % 2 == 0)
+		{
+			PhotonNetwork.Instantiate("PlayerRedTeam", position, rotation, 0);
+		}
 		else
-	        PhotonNetwork.Instantiate("PlayerBlueTeam", position, rotation, 0);
+		{
+			PhotonNetwork.Instantiate("PlayerBlueTeam", position, rotation, 0);
+		}
+		
 		StartCoroutine(SpawnAsteroid());
        
 
@@ -102,7 +110,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 		Vector3 position = new Vector3(x, 0.0f, z);
 		Quaternion rotation = Quaternion.Euler(0.0f, angularStart, 0.0f);
 
-        if (PhotonNetwork.LocalPlayer.GetPlayerNumber() < PhotonNetwork.CurrentRoom.PlayerCount * 0.5)
+        if (PhotonNetwork.LocalPlayer.GetPlayerNumber()%2==0)
             PhotonNetwork.Instantiate("PlayerRedTeam", position, rotation, 0);
         else
             PhotonNetwork.Instantiate("PlayerBlueTeam", position, rotation, 0);
