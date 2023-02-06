@@ -1,10 +1,11 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 
 
-public class PlayerAnimator : MonoBehaviour
+public class PlayerAnimator : MonoBehaviourPun
 {
     private PlayerController m_playerController;
     private Player m_player;
@@ -24,8 +25,12 @@ public class PlayerAnimator : MonoBehaviour
         m_playerController = GetComponent<PlayerController>();
         m_player = GetComponent<Player>();
         m_animator = GetComponentInChildren<Animator>();
-        
-       
+
+        if (!photonView.IsMine)
+        {
+
+            Destroy(this);
+        }
     }
 
 

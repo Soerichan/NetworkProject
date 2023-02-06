@@ -1,10 +1,11 @@
-//using Photon.Pun;
+using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Player : MonoBehaviour//Pun, IPunObservable
+public class Player : MonoBehaviourPun, IPunObservable
 {
     public Rigidbody m_rigidbody;
 
@@ -20,10 +21,29 @@ public class Player : MonoBehaviour//Pun, IPunObservable
 
     public Vector3 m_resistanceVector;
 
+    [SerializeField]
+    public float m_fMaxHP;
+    [SerializeField]
+    public float m_fNowHP;
+    [SerializeField]
+    public float m_fHPRegenTime;
+
+    private Coroutine m_coroutineHPRegen;
+
+
     private void Awake()
     {
         m_rigidbody = GetComponent<Rigidbody>();
         m_fMaxSpeedCopy = m_fMaxSpeed;
+    }
+
+    private void Start()
+    {
+        m_fNowHP = m_fMaxHP;
+
+       
+        m_coroutineHPRegen = StartCoroutine(HPRegenCoroutine());
+       
     }
 
     public void Accelate(float power)
@@ -76,8 +96,49 @@ public class Player : MonoBehaviour//Pun, IPunObservable
 
     }
 
-    //public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    //{
-    //    throw new System.NotImplementedException();
-    //}
+    public void Hurt()
+    {
+        if (m_fNowHP > 2)
+        {
+            m_fNowHP--;
+            ApplyState();
+            
+
+            //나중에 게임엔드에서 맥스스피드를 맥스스피드카피로 복구
+        }
+    }
+
+   
+    private void HPRegen()
+    {
+       
+            if (m_fNowHP < m_fMaxHP)
+            {
+                m_fNowHP++;
+            }
+
+        ApplyState();
+        
+    }
+
+
+    public void ApplyState()
+    {
+        m_fMaxSpeed = m_fMaxSpeed * (m_fNowHP / m_fMaxHP);
+    }
+
+    private IEnumerator HPRegenCoroutine()
+    {
+        while (true)
+        { 
+        yield return new WaitForSeconds(m_fHPRegenTime);
+
+        HPRegen();
+        }
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        throw new System.NotImplementedException();
+    }
 }
