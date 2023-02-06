@@ -9,11 +9,21 @@ using TMPro;
 
 using UnityEngine.UIElements;
 using Cinemachine;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
 	[SerializeField]
 	private TMP_Text infoText;
+
+	[SerializeField]
+	private TMP_Text timer;
+	private float sec;
+	private int min;
+	[SerializeField]
+	private List<Image> images=new List<Image>();
+
+	private List<GameObject> players= new List<GameObject>();
 	
 	private void Start()
 	{
@@ -28,10 +38,17 @@ public class GameManager : MonoBehaviourPunCallbacks
 			infoText.text = "";
 		}
 	}
+    private void Update()
+    {
+        sec+= Time.deltaTime;
+		if (sec > 60) { min++; sec = 0; }
+		timer.text = ""+min+":"+(int)sec;
+        
+    }
+    
+    #region PUN Callback
 
-	#region PUN Callback
-
-	public override void OnConnectedToMaster()
+    public override void OnConnectedToMaster()
 	{
 		PhotonNetwork.JoinOrCreateRoom("TestRoom", new RoomOptions() { MaxPlayers = 8 }, null);
 	}
@@ -90,11 +107,11 @@ public class GameManager : MonoBehaviourPunCallbacks
 		Quaternion rotation = Quaternion.Euler(0.0f, angularStart, 0.0f);
 		if (PhotonNetwork.LocalPlayer.GetPlayerNumber() % 2 == 0)
 		{
-			PhotonNetwork.Instantiate("PlayerRedTeam", position, rotation, 0);
+			players.Add(PhotonNetwork.Instantiate("PlayerRedTeam", position, rotation, 0));
 		}
 		else
 		{
-			PhotonNetwork.Instantiate("PlayerBlueTeam", position, rotation, 0);
+            players.Add(PhotonNetwork.Instantiate("PlayerBlueTeam", position, rotation, 0));
 		}
 		
 		StartCoroutine(SpawnAsteroid());

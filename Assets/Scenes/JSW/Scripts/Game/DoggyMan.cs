@@ -17,8 +17,6 @@ public class DoggyMan : MonoBehaviourPun, IPunObservable
 	[SerializeField]
 	private float maxSpeed;
 
-	[SerializeField]
-	private Bullet bulletPrefab;
 
 	[SerializeField]
 	private TMP_Text tmpName;
@@ -29,7 +27,7 @@ public class DoggyMan : MonoBehaviourPun, IPunObservable
 	private void Awake()
 	{
 		rigid = GetComponent<Rigidbody>();
-		tmpName.text = PhotonNetwork.PlayerList.ToString();
+		tmpName.text = PhotonNetwork.PlayerList[0].NickName.ToString();
 	}
 
 	private void Update()
@@ -79,7 +77,7 @@ public class DoggyMan : MonoBehaviourPun, IPunObservable
 	[PunRPC]
 	public void CreateBullet(Vector3 position, Quaternion rotation)
 	{
-		Instantiate(bulletPrefab, position, rotation);
+		//Instantiate(bulletPrefab, position, rotation);
 	}
 
 	public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

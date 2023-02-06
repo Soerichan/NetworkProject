@@ -50,8 +50,8 @@ public class RoomPanel : MonoBehaviour
 			{
                 entry = Instantiate(playerEntryPrefab, playerBlueContent);
             }
-			//플레이어 겟플레이어 넘버로 조절 해볼것?
-			//PlayerEntry entry = Instantiate(playerEntryPrefab, playerContent);
+		
+			
 			entry.Initailize(player.ActorNumber, player.NickName);
 			object isPlayerReady;
 			if (player.CustomProperties.TryGetValue(GameData.PLAYER_READY, out isPlayerReady))

@@ -13,6 +13,8 @@ public class PlayerEntry : MonoBehaviour
 	private TMP_Text playerReady;
 	[SerializeField]
 	private Button playerReadyButton;
+	[SerializeField]
+	private Image profile;
 
 	private int ownerId;
 

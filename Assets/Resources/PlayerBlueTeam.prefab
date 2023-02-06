@@ -2353,7 +2353,6 @@ MonoBehaviour:
   movePower: 5
   rotateSpeed: 5
   maxSpeed: 10
-  bulletPrefab: {fileID: 0}
   tmpName: {fileID: 483271850531439196}
   bulletCount: 0
 --- !u!54 &2167646458637431659

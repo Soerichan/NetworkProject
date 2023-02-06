@@ -218,7 +218,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerContent: {fileID: 1204404543}
+  playerRedContent: {fileID: 0}
+  playerBlueContent: {fileID: 0}
   playerEntryPrefab: {fileID: 1224596835027887378, guid: e6e87caa82c916447b533b2eb2185a63, type: 3}
+  redTeambutton: {fileID: 0}
+  blueTeambutton: {fileID: 0}
   startButton: {fileID: 5916088861808141049}
 --- !u!1 &2700146042697714935
 GameObject:
@@ -558,7 +562,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 21300000, guid: d7d480a22b9c1f64bb6d748bf353e45b, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -692,7 +696,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 21300000, guid: e0b63f1cfe110994ba2ad2de0e5292de, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
