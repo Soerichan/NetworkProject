@@ -4,6 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - FxTemporaire
+  - Enemy
   - Bullet
   layers:
   - Default
@@ -12,8 +14,8 @@ TagManager:
   - 
   - Water
   - UI
+  - Ground
   - Player
-  - 
   - 
   - 
   - 
