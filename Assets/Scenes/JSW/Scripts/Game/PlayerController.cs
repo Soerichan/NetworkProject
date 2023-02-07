@@ -1,3 +1,5 @@
+namespace jsw
+{
 using Cinemachine;
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
@@ -56,4 +58,5 @@ public class PlayerController : MonoBehaviourPun
 		if (Input.GetButtonDown("Fire1"))
 			Doggy.Fire();
 	}
+}
 }

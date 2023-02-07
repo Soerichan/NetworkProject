@@ -1,4 +1,5 @@
-using ExitGames.Client.Photon;
+namespace jsw{
+	using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Realtime;
 using System.Collections.Generic;
@@ -119,4 +120,5 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 	{
 		StatePanel.Instance.AddMessage(message);
 	}
+}
 }

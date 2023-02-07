@@ -1,4 +1,7 @@
-using System.Collections;
+namespace jsw
+{
+    
+    using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -25,4 +28,5 @@ public class MapMaker : MonoBehaviour
         }
     
     }
+}
 }

@@ -1,4 +1,4 @@
-using Photon.Pun;
+namespace jsw{using Photon.Pun;
 using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
 using System.Collections.Generic;
@@ -120,4 +120,5 @@ public class RoomPanel : MonoBehaviour
 	{
 		PhotonNetwork.LeaveRoom();
 	}
+}
 }
