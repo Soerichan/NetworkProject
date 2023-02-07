@@ -11,6 +11,11 @@ public class RoundManager : MonoBehaviourPun
     public TimerUI m_timer;
     public ScoreUI m_scoreUI;
     public UIManager m_UImanager;
+    public WinUI m_winUI;
+    public LoseUI m_loseUI;
+    public DrawUI m_drawUI;
+
+    
 
     private void Awake()
     {
