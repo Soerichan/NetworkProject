@@ -1,51 +1,54 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.AI;
-using UnityEngine.UIElements;
-using UnityEngineInternal;
-using static UnityEngine.ParticleSystem;
-
-
-[RequireComponent(typeof(NavMeshAgent))]
-public class PlayerController : MonoBehaviour
+namespace Mong
 {
+    using System.Collections;
+    using System.Collections.Generic;
+    using UnityEngine;
+    using UnityEngine.AI;
+    using UnityEngine.UIElements;
+    using UnityEngineInternal;
+    using static UnityEngine.ParticleSystem;
 
-    public NavMeshAgent agent;
-    public float speed;
-    public GameObject player;
-    public ParticleSystem particle;
 
-    private void Start()
+    [RequireComponent(typeof(NavMeshAgent))]
+    public class PlayerController : MonoBehaviour
     {
-        agent = GetComponent<NavMeshAgent>();
-    }
 
-    private void Update()
-    {
-        Move();
-    }
+        public NavMeshAgent agent;
+        public float speed;
+        public GameObject player;
+        public ParticleSystem particle;
 
-
-    public void Move()
-    {
-        if (GameObject.Find("Player"))
-        { 
-            agent.destination = player.transform.position;
-            //transform.Translate(player.transform.position * Time.deltaTime * speed, Space.Self);
-        }
-        else return;
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.collider.tag == "Player")
+        private void Start()
         {
-            particle.Play();
+            agent = GetComponent<NavMeshAgent>();
         }
-        else
+
+        private void Update()
         {
-            particle.Clear();
+            Move();
+        }
+
+
+        public void Move()
+        {
+            if (GameObject.Find("Player"))
+            {
+                agent.destination = player.transform.position;
+                //transform.Translate(player.transform.position * Time.deltaTime * speed, Space.Self);
+            }
+            else return;
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (collision.collider.tag == "Player")
+            {
+                particle.Play();
+            }
+            else
+            {
+                particle.Clear();
+            }
         }
     }
 }
