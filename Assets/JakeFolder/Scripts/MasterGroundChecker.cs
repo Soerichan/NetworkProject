@@ -16,7 +16,7 @@ public class MasterGroundChecker : MonoBehaviourPun
 
         private void Start()
         {
-            m_cubeManager = GameObject.Find("CubeManager").GetComponent<CubeManager>();
+            m_cubeManager = GameObject.Find("SubwayMap").GetComponent<CubeManager>();
         }
         private void OnTriggerEnter(Collider other)
         {

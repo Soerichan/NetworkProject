@@ -11,9 +11,9 @@ public class PlayerCamera : MonoBehaviourPun
     {
         if(photonView.IsMine)
         {
-            CinemachineVirtualCamera playerCamera = FindObjectOfType<CinemachineVirtualCamera>();
+            CinemachineVirtualCamera playerCamera = GetComponent<CinemachineVirtualCamera>();
             playerCamera.Follow = transform;
-            //playerCamera.LookAt=transform;
+          
         }
     }
 
