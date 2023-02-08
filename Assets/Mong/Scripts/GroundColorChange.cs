@@ -4,10 +4,7 @@ using UnityEngine;
 
 public class GroundColorChange : MonoBehaviour
 {
-    public new Renderer renderer;
-    private void Start()
-    {
-        renderer = GetComponent<Renderer>();
-    }
+    public float m_fNumber;
+    public float m_fColor;
     
 }

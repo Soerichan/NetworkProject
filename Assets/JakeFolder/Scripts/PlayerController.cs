@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using Jake;
 
 public enum State { Idle, Punch, Dropkick, Dizzy, Down, Recover, Run };
 
@@ -58,6 +59,8 @@ public class PlayerController : MonoBehaviourPun
     private PlayerController m_playerOpponent;
     public float m_fTeamNumber;
 
+    public Jake.MasterGroundChecker m_masterGroundChecker;
+
     private void Awake()
     {
         m_player = GetComponent<Player>();
@@ -67,13 +70,17 @@ public class PlayerController : MonoBehaviourPun
 
     private void Start()
     {
-       
+        
          
         if(photonView.IsMine!=true)
         {
 
             Destroy(this);
         }
+
+        m_masterGroundChecker.m_fTeam = m_fTeamNumber;
+        m_fTeamNumber = PhotonNetwork.LocalPlayer.GetPlayerNumber() % 2 == 0 ? 0 : 1;
+
     }
     private void Update()
     {

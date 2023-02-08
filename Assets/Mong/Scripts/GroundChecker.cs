@@ -13,10 +13,12 @@ public class GroundChecker : MonoBehaviour
         // 나중에 이벤트로 땅에 닿았으면 색칠 해주는걸로 변경 예정 
         if (other.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
-            if (playerType == PlayerType.Player)
-                other.gameObject.GetComponent<GroundColorChange>().renderer.material.color = Color.red;
-            else
-                other.gameObject.GetComponent<GroundColorChange>().renderer.material.color = Color.blue;
+            //if (playerType == PlayerType.Player)
+               // other.gameObject.GetComponent<GroundColorChange>().renderer.material.color = Color.red;
+            //else
+              //  other.gameObject.GetComponent<GroundColorChange>().renderer.material.color = Color.blue;
+
+           
         }
     }
 
