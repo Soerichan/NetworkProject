@@ -1,4 +1,6 @@
 using Photon.Pun;
+using Photon.Pun.UtilityScripts;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,43 +11,52 @@ public class RoundManager : MonoBehaviourPun
 
     public float m_fLimitTime;
     public TimerUI m_timer;
-    public ScoreUI m_scoreUI;
-    public UIManager m_UImanager;
-    public WinUI m_winUI;
-    public LoseUI m_loseUI;
-    public DrawUI m_drawUI;
+    
+    public UIManager m_UIManager;
+    
+    public List<Photon.Realtime.Player> m_listPlayer;
+    
 
     
 
     private void Awake()
     {
-        if (photonView.IsMine != true)
-        {
-
-            Destroy(this);
-        }
+        
     }
 
     private void Start()
     {
-        RoundStart();
+        if (PhotonNetwork.IsMasterClient)
+        {
+            RoundStart();
+        }
+
+        for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
+        {
+            m_listPlayer[i] = PhotonNetwork.PlayerList[i];
+        }
     }
 
     public void RoundStart()
     {
-       
+        if (PhotonNetwork.IsMasterClient)
+        { 
         m_timer.m_slider.maxValue = m_fLimitTime;
         m_timer.m_slider.value = m_fLimitTime;
-        
-       
+
+
         StartCoroutine(RoundCoroutine());
         StartCoroutine(TimeCoroutine());
+        }
     }
 
     public void RoundEnd()
     {
-        StopAllCoroutines();
-        WinJudgment();
+        if (PhotonNetwork.IsMasterClient)
+        {
+            StopAllCoroutines();
+            WinJudgment();
+        }
     }
 
     public IEnumerator RoundCoroutine()
@@ -58,8 +69,7 @@ public class RoundManager : MonoBehaviourPun
         {
             m_timer.m_slider.value-=0.5f;
 
-            m_scoreUI.m_fBlueScore++;
-            m_scoreUI.m_fYellowScore++;
+           
             yield return new WaitForSeconds(0.5f);
         }
         
@@ -68,30 +78,89 @@ public class RoundManager : MonoBehaviourPun
 
     public void WinJudgment()
     {
-        if(m_scoreUI.m_fBlueScore>m_scoreUI.m_fYellowScore)
+        if (PhotonNetwork.IsMasterClient)
         {
-            BlueWin();
-        }
-        else if (m_scoreUI.m_fBlueScore > m_scoreUI.m_fYellowScore)
-        {
-            YellowWin();
-        }
-        else
-        {
-            Draw();
+            if (m_UIManager.m_scoreUI.m_fBlueScore > m_UIManager.m_scoreUI.m_fYellowScore)
+            {
+                BlueWin();
+            }
+            else if (m_UIManager.m_scoreUI.m_fBlueScore > m_UIManager.m_scoreUI.m_fYellowScore)
+            {
+                YellowWin();
+            }
+            else
+            {
+                Draw();
+            }
         }
     }
 
+    
     public void BlueWin()
     {
+        for (int i = 0; i < m_listPlayer.Count; i++)
+        {
+            if(m_listPlayer[i].GetPlayerNumber()%2==0)
+            {
 
+            }
+            else
+            {
+
+            }
+        }
     }
     public void YellowWin()
     {
+        for (int i = 0; i < m_listPlayer.Count; i++)
+        {
+            if (m_listPlayer[i].GetPlayerNumber() % 2 == 0)
+            {
 
+            }
+            else
+            {
+
+            }
+        }
     }
     public void Draw()
     {
-        
+        photonView.RPC("Draw", RpcTarget.All);
+    }
+
+    [PunRPC]
+    public void BlueWinUICall()
+    {
+        bool win = PhotonNetwork.LocalPlayer.GetPlayerNumber() % 2 == 0 ? false : true;
+        if(win)
+        {
+            m_UIManager.Win();
+        }
+        else
+        {
+            m_UIManager.Lose();
+        }
+    }
+
+    [PunRPC]
+    public void YellowWinUICall()
+    {
+        bool win = PhotonNetwork.LocalPlayer.GetPlayerNumber() % 2 == 0 ? true: false;
+        if (win)
+        {
+            m_UIManager.Win();
+        }
+        else
+        {
+            m_UIManager.Lose();
+        }
+    }
+
+
+    [PunRPC]
+    public void DrawUICall()
+    {
+        m_UIManager.Draw();
     }
 }

@@ -1,18 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class UIManager : MonoBehaviour
+public class UIManager : MonoBehaviourPun
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public WinUI m_winUI;
+    public LoseUI m_loseUI;
+    public DrawUI m_drawUI;
 
-    // Update is called once per frame
-    void Update()
+    public ScoreUI m_scoreUI;
+
+  
+    public void Win()
     {
-        
+        m_winUI.gameObject.SetActive(true);
+    }
+   
+    public void Lose()
+    {
+        m_loseUI.gameObject.SetActive(true);
+    }
+   
+    public void Draw()
+    {
+        m_drawUI.gameObject.SetActive(true);    
     }
 }
