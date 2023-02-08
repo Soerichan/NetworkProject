@@ -95,7 +95,7 @@ public class RoomPanel : MonoBehaviour
 		PhotonNetwork.CurrentRoom.IsVisible = false;
 		
 
-		PhotonNetwork.LoadLevel("JswGameScene");
+		PhotonNetwork.LoadLevel("TestMapScene");
 	}
 	public void OnShuffleButtonClicked()
 	{
