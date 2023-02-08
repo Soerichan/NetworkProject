@@ -110,11 +110,11 @@ namespace jsw
 			Quaternion rotation = Quaternion.Euler(0.0f, angularStart, 0.0f);
 			if (PhotonNetwork.LocalPlayer.GetPlayerNumber() % 2 == 0)
 			{
-				players.Add(PhotonNetwork.Instantiate("PlayerRedTeam", position, rotation, 0));
+				players.Add(PhotonNetwork.Instantiate("PlayerY", position, rotation, 0));
 			}
 			else
 			{
-				players.Add(PhotonNetwork.Instantiate("PlayerBlueTeam", position, rotation, 0));
+				players.Add(PhotonNetwork.Instantiate("PlayerB", position, rotation, 0));
 			}
 
 			StartCoroutine(SpawnAsteroid());
@@ -131,9 +131,9 @@ namespace jsw
 			Quaternion rotation = Quaternion.Euler(0.0f, angularStart, 0.0f);
 
 			if (PhotonNetwork.LocalPlayer.GetPlayerNumber() % 2 == 0)
-				PhotonNetwork.Instantiate("PlayerRedTeam", position, rotation, 0);
+				PhotonNetwork.Instantiate("PlayerY", position, rotation, 0);
 			else
-				PhotonNetwork.Instantiate("PlayerBlueTeam", position, rotation, 0);
+				PhotonNetwork.Instantiate("PlayerB", position, rotation, 0);
 
 			StartCoroutine(SpawnAsteroid());
 		}
