@@ -56,7 +56,8 @@ public class Joystick : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     private void JoystickControll(PointerEventData eventData)
     {
-        var inputPos = eventData.position - m_rectTransform.anchoredPosition;
+       // Debug.Log(string.Format("{0} - {1}", eventData.position, m_rectTransform.anchoredPosition));
+        var inputPos = eventData.position * (800f / Screen.width) - m_rectTransform.anchoredPosition;
         var inputVector = inputPos.magnitude < m_fLeverRange ? inputPos : inputPos.normalized * m_fLeverRange;
         m_lever.anchoredPosition = inputVector;
         m_inputDir = inputVector / m_fLeverRange;
