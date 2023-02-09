@@ -23,6 +23,7 @@ namespace jsw
 		private TMP_Text timer;
 		private float sec;
 		private int min;
+		private int timerStop=0;
 		[SerializeField]
 		private List<Image> images = new List<Image>();
 
@@ -43,12 +44,16 @@ namespace jsw
 		}
 		private void Update()
 		{
-			sec += Time.deltaTime;
-			if (sec > 60) { min++; sec = 0; }
-			timer.text = "" + min + ":" + (int)sec;
+			MainTimer();
 
-		}
 
+        }
+		public void MainTimer()
+		{
+            sec += timerStop*Time.deltaTime;
+            if (sec > 60) { min++; sec = 0; }
+            timer.text = "" + min + ":" + (int)sec;
+        }
 		#region PUN Callback
 
 		public override void OnConnectedToMaster()
@@ -102,8 +107,8 @@ namespace jsw
 
 		private void GameStart()
 		{
-
-			float angularStart = (360.0f / PhotonNetwork.CurrentRoom.PlayerCount) * PhotonNetwork.LocalPlayer.GetPlayerNumber();
+            timerStop = 1;
+            float angularStart = (360.0f / PhotonNetwork.CurrentRoom.PlayerCount) * PhotonNetwork.LocalPlayer.GetPlayerNumber();
 			float x = 20.0f * Mathf.Sin(angularStart * Mathf.Deg2Rad);
 			float z = 20.0f * Mathf.Cos(angularStart * Mathf.Deg2Rad);
 			Vector3 position = new Vector3(x, 0.0f, z);
@@ -124,6 +129,7 @@ namespace jsw
 
 		private void TestGameStart()
 		{
+			timerStop = 1;
 			float angularStart = (360.0f / PhotonNetwork.CurrentRoom.PlayerCount) * PhotonNetwork.LocalPlayer.GetPlayerNumber();
 			float x = 20.0f * Mathf.Sin(angularStart * Mathf.Deg2Rad);
 			float z = 20.0f * Mathf.Cos(angularStart * Mathf.Deg2Rad);
