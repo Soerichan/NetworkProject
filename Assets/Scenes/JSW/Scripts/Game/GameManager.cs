@@ -28,6 +28,9 @@ namespace jsw
 
 		private List<GameObject> players = new List<GameObject>();
 
+		[SerializeField]
+		private RoundManager m_roundManager;
+
 		private void Start()
 		{
 			if (PhotonNetwork.InRoom)
@@ -117,10 +120,13 @@ namespace jsw
 				players.Add(PhotonNetwork.Instantiate("PlayerB", position, rotation, 0));
 			}
 
-			StartCoroutine(SpawnAsteroid());
+
+			m_roundManager = GameObject.Find("RoundManager").GetComponent<RoundManager>();
+			m_roundManager.RoundStart();
 
 
-		}
+
+        }
 
 		private void TestGameStart()
 		{

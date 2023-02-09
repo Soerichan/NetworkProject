@@ -1,3 +1,4 @@
+using Cinemachine;
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
@@ -13,9 +14,8 @@ public class RoundManager : MonoBehaviourPun
     public TimerUI m_timer;
     
     public UIManager m_UIManager;
-    
-    public List<Photon.Realtime.Player> m_listPlayer;
-    
+
+    public PlayerCamera m_playerCamera;
 
     
 
@@ -30,11 +30,8 @@ public class RoundManager : MonoBehaviourPun
         {
             RoundStart();
         }
-
-        for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
-        {
-            m_listPlayer[i] = PhotonNetwork.PlayerList[i];
-        }
+        
+     
     }
 
     public void RoundStart()
@@ -43,12 +40,21 @@ public class RoundManager : MonoBehaviourPun
         { 
         m_timer.m_slider.maxValue = m_fLimitTime;
         m_timer.m_slider.value = m_fLimitTime;
-
+        m_UIManager.RoundStart();
+        m_playerCamera.RoundStart();
 
         StartCoroutine(RoundCoroutine());
         StartCoroutine(TimeCoroutine());
         }
     }
+
+    [PunRPC]
+    public void RemoteRoundStart()
+    {
+        m_UIManager.RoundStart();
+        m_playerCamera.RoundStart();
+    }
+
 
     public void RoundEnd()
     {
@@ -98,9 +104,9 @@ public class RoundManager : MonoBehaviourPun
     
     public void BlueWin()
     {
-        for (int i = 0; i < m_listPlayer.Count; i++)
+        for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
         {
-            if(m_listPlayer[i].GetPlayerNumber()%2==0)
+            if(PhotonNetwork.PlayerList[i].GetPlayerNumber()%2==0)
             {
 
             }
@@ -112,9 +118,9 @@ public class RoundManager : MonoBehaviourPun
     }
     public void YellowWin()
     {
-        for (int i = 0; i < m_listPlayer.Count; i++)
+        for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
         {
-            if (m_listPlayer[i].GetPlayerNumber() % 2 == 0)
+            if (PhotonNetwork.PlayerList[i].GetPlayerNumber() % 2 == 0)
             {
 
             }

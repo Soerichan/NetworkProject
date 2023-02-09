@@ -15,7 +15,7 @@ public class CubeManager : MonoBehaviourPun
     // Start is called before the first frame update
     void Start()
     {
-        m_uIManager = GameObject.Find("UIManager").GetComponent<UIManager>();
+       
         m_arrayCube = GetComponentsInChildren<GroundColorChange>();
 
         m_arrayRenderer = new Renderer[m_arrayCube.Length];

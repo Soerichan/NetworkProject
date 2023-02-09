@@ -6,17 +6,19 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using Jake;
+using Unity.VisualScripting;
 
 public enum State { Idle, Punch, Dropkick, Dizzy, Down, Recover, Run };
 
 
 public class PlayerController : MonoBehaviourPun
 {
-    private Player m_player;
+    public Player m_player;
     private PlayerAnimator m_playerAnimator;
+    public CubeManager m_cubeManager;
+   
 
-    
-    
+
 
     [SerializeField]
     public float m_fPuchTime;
@@ -65,7 +67,7 @@ public class PlayerController : MonoBehaviourPun
     {
         m_player = GetComponent<Player>();
         m_playerAnimator=GetComponent<PlayerAnimator>();
-        m_maskPlayer= LayerMask.GetMask("Player");
+        m_maskPlayer= LayerMask.NameToLayer("Player");
     }
 
     private void Start()
@@ -77,8 +79,8 @@ public class PlayerController : MonoBehaviourPun
 
             Destroy(this);
         }
-
-        m_masterGroundChecker.m_fTeam = m_fTeamNumber;
+        m_cubeManager = GameObject.Find("Map").GetComponent<CubeManager>();
+       
         m_fTeamNumber = PhotonNetwork.LocalPlayer.GetPlayerNumber() % 2 == 0 ? 0 : 1;
 
     }
@@ -161,20 +163,23 @@ public class PlayerController : MonoBehaviourPun
         {
             // 1. 범위내에 있는가
             Collider[] colliders = Physics.OverlapSphere(vec, m_fPunchRange, m_maskPlayer);
-
-
-
-            for (int i = 0; i < colliders.Length; i++)
+            if (colliders.Length==0)
             {
+                return;
+            }
 
+
+                for (int i = 0; i < colliders.Length; i++)
+                 {
+               
                 m_playerOpponent = colliders[i].GetComponent<PlayerController>();
 
-                if (m_playerOpponent != remote && m_playerOpponent.m_fTeamNumber != remote.m_fTeamNumber)
-                {
+                     if (m_playerOpponent != remote && m_playerOpponent.m_fTeamNumber != remote.m_fTeamNumber)
+                     {
 
                     break;
-                }
-            }
+                     }
+                 }
 
 
             Vector3 dirToTarget = (m_playerOpponent.transform.position - vec).normalized;
@@ -214,13 +219,17 @@ public class PlayerController : MonoBehaviourPun
 
     }
 
+    [PunRPC]
     public void DropkickJubgment(Vector3 vec, Vector3 forward, PlayerController remote)
     {
         if (PhotonNetwork.IsMasterClient)
         {
             // 1. 범위내에 있는가
             Collider[] colliders = Physics.OverlapSphere(vec, m_fDropkickRange, m_maskPlayer);
-
+            if (colliders.Length == 0)
+            {
+                return;
+            }
 
 
             for (int i = 0; i < colliders.Length; i++)
@@ -341,7 +350,23 @@ public class PlayerController : MonoBehaviourPun
     }
 
 
-    
+    public void GroundCheckCall(Collider other)
+    {
+        photonView.RPC("GroundCheckJudgment", RpcTarget.MasterClient, other, m_fTeamNumber);
+    }
+
+    [PunRPC]
+    public void GroundCheckJudgment(Collider other, float team)
+    {
+        
+
+            GroundColorChange newGroundColorChange = other.gameObject.GetComponent<GroundColorChange>();
+            float number = newGroundColorChange.m_fNumber;
+            m_cubeManager.Paint(number, team);
+
+        
+
+    }
 
 
     private void OnDrawGizmos()

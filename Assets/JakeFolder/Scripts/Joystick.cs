@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems; //키보드,마웃,터치를 이벤트로 오브젝트에원 보낼수 있는 기능을 지원
 
@@ -13,8 +14,9 @@ public class Joystick : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     [Range(10f, 150f)]
     private float m_fLeverRange;
 
-    [SerializeField]
+    private PlayerController[] m_playerController;
     private Player m_player;
+    
 
     private Vector2 m_inputDir;
     private bool m_bIsInput;
@@ -24,6 +26,25 @@ public class Joystick : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     private void Awake()
     {
         m_rectTransform = GetComponent<RectTransform>();
+    }
+
+
+    private void Start()
+    {
+        
+    }
+
+    public void RoundStart()
+    {
+        m_playerController = FindObjectsOfType<PlayerController>();
+
+        for (int i = 0; i < m_playerController.Length; i++)
+        {
+            if (m_playerController[i].photonView.IsMine)
+            {
+                m_player = m_playerController[i].m_player;
+            }
+        }
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -70,11 +91,7 @@ public class Joystick : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     {
         m_player.Move(m_inputDir);
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
+   
 
     // Update is called once per frame
     void Update()

@@ -11,7 +11,17 @@ public class UIManager : MonoBehaviourPun
 
     public ScoreUI m_scoreUI;
 
-  
+    public Joystick m_joystick;
+    public PunchButton m_punchButton;
+    public DropKickButton m_dropKickButton;
+
+    public void RoundStart()
+    {
+        m_joystick.RoundStart();
+        m_punchButton.RoundStart();
+        m_dropKickButton.RoundStart();
+    }
+
     public void Win()
     {
         m_winUI.gameObject.SetActive(true);
