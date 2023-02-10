@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Player : MonoBehaviourPun, IPunObservable
+public class Player : MonoBehaviourPun//, IPunObservable
 {
     public Rigidbody m_rigidbody;
 
@@ -137,8 +137,5 @@ public class Player : MonoBehaviourPun, IPunObservable
         }
     }
 
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        throw new System.NotImplementedException();
-    }
+   
 }

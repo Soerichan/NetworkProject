@@ -163,4 +163,23 @@ public class RoundManager : MonoBehaviourPun
     {
         m_UIManager.Draw();
     }
+
+
+    /* 
+        public void 글씨색깔 바꿀함수()
+    {
+        난 할 수 있다! 
+        전광판에 글씨 색깔 = 이긴팀에 색깔로 대입;
+    }
+
+    public void 판정함수()
+    {
+        if (이긴팀)
+            글씨색깔 바꿀 함수()
+            WinPosition.win()
+        else (진 팀)
+            WinPosition.Lose();
+    }
+
+     */
 }
