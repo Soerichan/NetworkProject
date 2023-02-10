@@ -15,6 +15,10 @@ public class UIManager : MonoBehaviourPun
     public PunchButton m_punchButton;
     public DropKickButton m_dropKickButton;
 
+
+
+
+
     public void RoundStart()
     {
         m_joystick.RoundStart();
