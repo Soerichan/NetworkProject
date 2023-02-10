@@ -397,4 +397,29 @@ public class PlayerController : MonoBehaviourPun
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, m_fPunchRange);
     }
+
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (photonView.IsMine != true)
+            return;
+
+        if (other.gameObject.layer == LayerMask.NameToLayer("Dragon"))
+        {
+            Vector3 vec = transform.position-other.transform.position;
+           
+            GetHitByDragon(vec);
+        }
+    }
+
+    public void GetHitByDragon(Vector3 vec)
+    {
+        if (photonView.IsMine != true|| m_state == State.Dizzy)
+            return;
+       
+        Dizzy();
+        m_player.Hurt();
+        m_player.m_rigidbody.AddForce(vec * m_fDropkickPower, ForceMode.Impulse);
+    }
+
 }
