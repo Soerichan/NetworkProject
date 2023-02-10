@@ -1,43 +1,22 @@
+using UnityEngine;
+using UnityEngine.Events;
+
 namespace Jake
 {
-
-    using Photon.Pun;
-    using Photon.Pun.UtilityScripts;
-    using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-
-public class MasterGroundChecker : MonoBehaviourPun
+    public class MasterGroundChecker : MonoBehaviour
     {
+        public UnityEvent<Collider> OnGroundTrigger;
 
-     
-        
-       
-        public PlayerController m_playerController;
-
-        private void Start()
-        {
-            m_playerController = GetComponentInParent<PlayerController>();
-           
-        }
         private void OnTriggerEnter(Collider other)
         {
-
-
+            
+            Debug.Log("온트리거엔터");
             // 나중에 이벤트로 땅에 닿았으면 색칠 해주는걸로 변경 예정 
             if (other.gameObject.layer == LayerMask.NameToLayer("Ground"))
             {
-                m_playerController.GroundCheckCall(other);
-               
+                OnGroundTrigger?.Invoke(other);
+                Debug.Log("이프문");
             }
         }
-
-        
     }
-
-
-
-
-
 }

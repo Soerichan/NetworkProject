@@ -38,21 +38,22 @@ public class RoundManager : MonoBehaviourPun
     {
         if (PhotonNetwork.IsMasterClient)
         { 
-        m_timer.m_slider.maxValue = m_fLimitTime;
-        m_timer.m_slider.value = m_fLimitTime;
-        m_UIManager.RoundStart();
-        m_playerCamera.RoundStart();
-
+       
+     
+        photonView.RPC("RemoteRoundStart", RpcTarget.All);
         StartCoroutine(RoundCoroutine());
-        StartCoroutine(TimeCoroutine());
+        
         }
     }
 
     [PunRPC]
     public void RemoteRoundStart()
     {
+        m_timer.m_slider.maxValue = m_fLimitTime;
+        m_timer.m_slider.value = m_fLimitTime;
         m_UIManager.RoundStart();
         m_playerCamera.RoundStart();
+        StartCoroutine(TimeCoroutine());
     }
 
 
@@ -68,7 +69,9 @@ public class RoundManager : MonoBehaviourPun
     public IEnumerator RoundCoroutine()
     {
         yield return new WaitForSeconds(m_fLimitTime);
+        RoundEnd();
     }
+
     public IEnumerator TimeCoroutine()
     {
         while (true)
@@ -104,35 +107,15 @@ public class RoundManager : MonoBehaviourPun
     
     public void BlueWin()
     {
-        for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
-        {
-            if(PhotonNetwork.PlayerList[i].GetPlayerNumber()%2==0)
-            {
-
-            }
-            else
-            {
-
-            }
-        }
+        photonView.RPC("BlueWinUICall", RpcTarget.All);
     }
     public void YellowWin()
     {
-        for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
-        {
-            if (PhotonNetwork.PlayerList[i].GetPlayerNumber() % 2 == 0)
-            {
-
-            }
-            else
-            {
-
-            }
-        }
+        photonView.RPC("YellowWinUICall", RpcTarget.All);
     }
     public void Draw()
     {
-        photonView.RPC("Draw", RpcTarget.All);
+        photonView.RPC("DrawUICall", RpcTarget.All);
     }
 
     [PunRPC]

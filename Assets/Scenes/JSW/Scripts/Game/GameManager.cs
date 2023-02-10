@@ -111,6 +111,7 @@ namespace jsw
 			float z = 20.0f * Mathf.Cos(angularStart * Mathf.Deg2Rad);
 			Vector3 position = new Vector3(x, 0.0f, z);
 			Quaternion rotation = Quaternion.Euler(0.0f, angularStart, 0.0f);
+
 			if (PhotonNetwork.LocalPlayer.GetPlayerNumber() % 2 == 0)
 			{
 				players.Add(PhotonNetwork.Instantiate("PlayerY", position, rotation, 0));
@@ -122,10 +123,17 @@ namespace jsw
 
 
 			m_roundManager = GameObject.Find("RoundManager").GetComponent<RoundManager>();
-			m_roundManager.RoundStart();
+			StartCoroutine(ReadyCoroutine());
 
 
 
+        }
+
+		
+		private IEnumerator ReadyCoroutine()
+		{
+			yield return new WaitForSeconds(2f);
+            m_roundManager.RoundStart();
         }
 
 		private void TestGameStart()

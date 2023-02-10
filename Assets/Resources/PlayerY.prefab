@@ -110,7 +110,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 791abec50cdf3094c9f5ed458867d2e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_playerController: {fileID: 0}
+  OnGroundTrigger:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6716977910464075592}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: GroundCheckCall
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6716977909171480880
 GameObject:
   m_ObjectHideFlags: 0
@@ -2032,6 +2046,7 @@ GameObject:
   - component: {fileID: 6716977910464075598}
   - component: {fileID: 7450355133282877163}
   - component: {fileID: 6716977910464075601}
+  - component: {fileID: 5197861830735208828}
   m_Layer: 7
   m_Name: PlayerY
   m_TagString: Untagged
@@ -2182,10 +2197,33 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
+  - {fileID: 6716977910464075595}
   - {fileID: 7450355133282877163}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!195 &5197861830735208828
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6716977910464075593}
+  m_Enabled: 0
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &6716977910522772453
 GameObject:
   m_ObjectHideFlags: 0

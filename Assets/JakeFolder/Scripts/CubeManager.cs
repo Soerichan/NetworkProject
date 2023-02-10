@@ -30,6 +30,7 @@ public class CubeManager : MonoBehaviourPun
 
     public void Paint(float number,float team)
     {
+        Debug.Log("ÆäÀÎÆ®");
         int iNumber = (int)number;
 
         if (m_bPainted[iNumber] ==false)
@@ -84,6 +85,7 @@ public class CubeManager : MonoBehaviourPun
     [PunRPC]
     public void ApplyPaintCube(float number,float team)
     {
+        Debug.Log("ApplyPaintCube");
         int iNumber = (int)number;
 
         if (team==0)

@@ -72,13 +72,6 @@ public class PlayerController : MonoBehaviourPun
 
     private void Start()
     {
-        
-         
-        if(photonView.IsMine!=true)
-        {
-
-            Destroy(this);
-        }
         m_cubeManager = GameObject.Find("Map").GetComponent<CubeManager>();
        
         m_fTeamNumber = PhotonNetwork.LocalPlayer.GetPlayerNumber() % 2 == 0 ? 0 : 1;
@@ -86,8 +79,10 @@ public class PlayerController : MonoBehaviourPun
     }
     private void Update()
     {
+        if (photonView.IsMine != true)
+            return;
 
-       switch(m_state)
+        switch (m_state)
         {
             case State.Idle:
 
@@ -145,19 +140,21 @@ public class PlayerController : MonoBehaviourPun
 
     public void Punch()
     {
-       
-            m_playerAnimator.Punch();
+        if (photonView.IsMine != true)
+            return;
+
+        m_playerAnimator.Punch();
             m_state = State.Punch;
             m_coroutinePunch = StartCoroutine(PunchToIdle());
             
-            photonView.RPC("PunchJudgment", RpcTarget.MasterClient, transform.position, transform.forward,this);
+            photonView.RPC("PunchJudgment", RpcTarget.MasterClient, transform.position, transform.forward,m_fTeamNumber);
 
 
 
     }
 
     [PunRPC]
-    public void PunchJudgment(Vector3 vec,Vector3 forward , PlayerController remote)
+    public void PunchJudgment(Vector3 vec,Vector3 forward , float team)
     {
         if (PhotonNetwork.IsMasterClient)
         {
@@ -174,7 +171,7 @@ public class PlayerController : MonoBehaviourPun
                
                 m_playerOpponent = colliders[i].GetComponent<PlayerController>();
 
-                     if (m_playerOpponent != remote && m_playerOpponent.m_fTeamNumber != remote.m_fTeamNumber)
+                     if (m_playerOpponent.m_fTeamNumber != team)
                      {
 
                     break;
@@ -198,7 +195,9 @@ public class PlayerController : MonoBehaviourPun
 
     public void Punched(Vector3 vec)
     {
-      
+        if (photonView.IsMine != true)
+            return;
+
         Dizzy();
         m_player.Hurt();
         m_player.m_rigidbody.AddForce(vec*m_fPunchPower, ForceMode.Impulse);
@@ -209,18 +208,21 @@ public class PlayerController : MonoBehaviourPun
 
     public void Dropkick()
     {
-        
-            m_playerAnimator.Dropkick();
+        if (photonView.IsMine != true)
+            return;
+
+
+        m_playerAnimator.Dropkick();
             m_state = State.Dropkick;
             m_coroutineDropkick = StartCoroutine(DropkickToIdle());
            
-        photonView.RPC("DropkickJubgment", RpcTarget.MasterClient, transform.position, transform.forward, this);
+        photonView.RPC("DropkickJubgment", RpcTarget.MasterClient, transform.position, transform.forward, m_fTeamNumber);
 
 
     }
 
     [PunRPC]
-    public void DropkickJubgment(Vector3 vec, Vector3 forward, PlayerController remote)
+    public void DropkickJubgment(Vector3 vec, Vector3 forward, float team)
     {
         if (PhotonNetwork.IsMasterClient)
         {
@@ -237,7 +239,7 @@ public class PlayerController : MonoBehaviourPun
 
                 m_playerOpponent = colliders[i].GetComponent<PlayerController>();
 
-                if (m_playerOpponent != remote && m_playerOpponent.m_fTeamNumber != remote.m_fTeamNumber)
+                if (m_playerOpponent.m_fTeamNumber != team)
                 {
 
                     break;
@@ -259,6 +261,9 @@ public class PlayerController : MonoBehaviourPun
 
     public void Dropkicked(Vector3 vec)
     {
+        if (photonView.IsMine != true)
+            return;
+
         Down();
         m_player.Hurt();
         transform.forward = -vec;
@@ -267,7 +272,10 @@ public class PlayerController : MonoBehaviourPun
 
     public void Dizzy()
     {
-        if(m_state != State.Dizzy)
+        if (photonView.IsMine != true)
+            return;
+
+        if (m_state != State.Dizzy)
         {
         m_coroutineDizzy = StartCoroutine(DizzyToIdle());
         m_state=State.Dizzy;
@@ -279,6 +287,9 @@ public class PlayerController : MonoBehaviourPun
 
     public void Down()
     {
+        if (photonView.IsMine != true)
+            return;
+
         m_playerAnimator.Down();
         m_state=State.Down;
         m_coroutineDown = StartCoroutine(DownToIdle());
@@ -286,6 +297,9 @@ public class PlayerController : MonoBehaviourPun
 
     public void Recover()
     {
+        if (photonView.IsMine != true)
+            return;
+
         m_playerAnimator.Recover();
         m_state=State.Recover;
         m_coroutineRecover = StartCoroutine(RecoverToIdle());
@@ -293,7 +307,10 @@ public class PlayerController : MonoBehaviourPun
 
     public void Idle()
     {
-        if(m_player.m_rigidbody.velocity==new Vector3(0,0,0))
+        if (photonView.IsMine != true)
+            return;
+
+        if (m_player.m_rigidbody.velocity==new Vector3(0,0,0))
         {
             m_playerAnimator.Idle();
             m_state = State.Idle;
@@ -352,25 +369,31 @@ public class PlayerController : MonoBehaviourPun
 
     public void GroundCheckCall(Collider other)
     {
-        photonView.RPC("GroundCheckJudgment", RpcTarget.MasterClient, other, m_fTeamNumber);
+        if (photonView.IsMine != true)
+            return;
+
+        Debug.Log("그라운드체크콜");
+        GroundColorChange newGroundColorChange = other.gameObject.GetComponent<GroundColorChange>();
+
+        float number = newGroundColorChange.m_fNumber;
+
+        photonView.RPC("GroundCheckJudgment", RpcTarget.MasterClient, number, m_fTeamNumber);
+
     }
 
     [PunRPC]
-    public void GroundCheckJudgment(Collider other, float team)
+    public void GroundCheckJudgment(float number, float team)
     {
-        
-
-            GroundColorChange newGroundColorChange = other.gameObject.GetComponent<GroundColorChange>();
-            float number = newGroundColorChange.m_fNumber;
-            m_cubeManager.Paint(number, team);
-
-        
-
+        Debug.Log("그라운드체크젓지");
+        m_cubeManager.Paint(number, team);
     }
 
 
     private void OnDrawGizmos()
     {
+        if (photonView.IsMine != true)
+            return;
+
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, m_fPunchRange);
     }
