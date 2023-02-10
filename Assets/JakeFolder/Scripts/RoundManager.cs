@@ -17,7 +17,6 @@ public class RoundManager : MonoBehaviourPun
 
     public PlayerCamera m_playerCamera;
 
-    
 
     private void Awake()
     {
@@ -26,13 +25,12 @@ public class RoundManager : MonoBehaviourPun
 
     private void Start()
     {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            RoundStart();
-        }
+       
         
      
     }
+
+ 
 
     public void RoundStart()
     {
@@ -49,11 +47,15 @@ public class RoundManager : MonoBehaviourPun
     [PunRPC]
     public void RemoteRoundStart()
     {
+
         m_timer.m_slider.maxValue = m_fLimitTime;
         m_timer.m_slider.value = m_fLimitTime;
         m_UIManager.RoundStart();
         m_playerCamera.RoundStart();
         StartCoroutine(TimeCoroutine());
+        
+
+
     }
 
 
