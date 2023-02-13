@@ -28,6 +28,9 @@ namespace jsw
 
 		private List<GameObject> players = new List<GameObject>();
 
+		[SerializeField]
+		private RoundManager m_roundManager;
+
 		private void Start()
 		{
 			if (PhotonNetwork.InRoom)
@@ -108,6 +111,7 @@ namespace jsw
 			float z = 20.0f * Mathf.Cos(angularStart * Mathf.Deg2Rad);
 			Vector3 position = new Vector3(x, 0.0f, z);
 			Quaternion rotation = Quaternion.Euler(0.0f, angularStart, 0.0f);
+
 			if (PhotonNetwork.LocalPlayer.GetPlayerNumber() % 2 == 0)
 			{
 				players.Add(PhotonNetwork.Instantiate("PlayerY", position, rotation, 0));
@@ -117,10 +121,20 @@ namespace jsw
 				players.Add(PhotonNetwork.Instantiate("PlayerB", position, rotation, 0));
 			}
 
-			StartCoroutine(SpawnAsteroid());
+
+			m_roundManager = GameObject.Find("RoundManager").GetComponent<RoundManager>();
+			StartCoroutine(ReadyCoroutine());
 
 
-		}
+
+        }
+
+		
+		private IEnumerator ReadyCoroutine()
+		{
+			yield return new WaitForSeconds(3f);
+            m_roundManager.RoundStart();
+        }
 
 		private void TestGameStart()
 		{
