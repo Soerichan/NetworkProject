@@ -25,13 +25,6 @@ public class DragonAttack : MonoBehaviourPun
         m_dragon.m_rigidbody.velocity = transform.forward*m_fVelocity;
     }
 
-    private void Update()
-    {
-        //dragon.transform.Translate(Vector3.forward * Time.deltaTime * speed, Space.Self);
-
-        m_dragon.m_rigidbody.velocity = m_dragon.transform.forward * m_fVelocity;
-
-    }
 
 
 
@@ -47,6 +40,7 @@ public class DragonAttack : MonoBehaviourPun
             int q = Random.Range(0, 4);
             m_dragon.transform.position = attackPosition[q].transform.position;
             m_dragon.transform.rotation = attackPosition[q].transform.rotation;
+            m_dragon.m_rigidbody.velocity = m_dragon.transform.forward * m_fVelocity;
         }
     }
 

@@ -7,6 +7,7 @@ using System.Threading;
 using UnityEngine;
 using Jake;
 using Unity.VisualScripting;
+using ObjectPool;
 
 public enum State { Idle, Punch, Dropkick, Dizzy, Down, Recover, Run ,Die};
 
@@ -62,6 +63,7 @@ public class PlayerController : MonoBehaviourPun
     private LayerMask m_maskPlayer;
     private PlayerController m_playerOpponent;
     public float m_fTeamNumber;
+    public PoolManager m_poolManager;
 
     public Jake.MasterGroundChecker m_masterGroundChecker;
 
@@ -155,7 +157,7 @@ public class PlayerController : MonoBehaviourPun
             m_coroutinePunch = StartCoroutine(PunchToIdle());
             
             photonView.RPC("PunchJudgment", RpcTarget.MasterClient, transform.position, transform.forward,m_fTeamNumber);
-
+       // m_poolManager.Get()
 
 
     }
