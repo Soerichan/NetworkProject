@@ -8,7 +8,7 @@ using UnityEngine;
 using Jake;
 using Unity.VisualScripting;
 
-public enum State { Idle, Punch, Dropkick, Dizzy, Down, Recover, Run };
+public enum State { Idle, Punch, Dropkick, Dizzy, Down, Recover, Run ,Die};
 
 
 public class PlayerController : MonoBehaviourPun
@@ -16,7 +16,8 @@ public class PlayerController : MonoBehaviourPun
     public Player m_player;
     private PlayerAnimator m_playerAnimator;
     public CubeManager m_cubeManager;
-   
+    public GameObject m_gFX;
+    public Transform m_respawnPosition;
 
 
 
@@ -30,7 +31,8 @@ public class PlayerController : MonoBehaviourPun
     public float m_fDownTime;
     [SerializeField]
     public float m_fRecoverTime;
-
+    [SerializeField]
+    public float m_fRespawnTime;
     
     [SerializeField]
     public float m_fPunchRange;
@@ -63,6 +65,8 @@ public class PlayerController : MonoBehaviourPun
 
     public Jake.MasterGroundChecker m_masterGroundChecker;
 
+    public Coroutine m_respawnCoroutine;
+
     private void Awake()
     {
         m_player = GetComponent<Player>();
@@ -73,7 +77,7 @@ public class PlayerController : MonoBehaviourPun
     private void Start()
     {
         m_cubeManager = GameObject.Find("Map").GetComponent<CubeManager>();
-       
+       m_respawnPosition= GameObject.Find("RespawnPosition").transform;
         m_fTeamNumber = PhotonNetwork.LocalPlayer.GetPlayerNumber() % 2 == 0 ? 0 : 1;
 
     }
@@ -114,7 +118,10 @@ public class PlayerController : MonoBehaviourPun
             case State.Run:
                 Accelate();
                 Rotate();
-               
+                break;
+
+            case State.Die:
+
                 break;
         }
        
@@ -399,15 +406,17 @@ public class PlayerController : MonoBehaviourPun
     }
 
 
-    private void OnCollisionEnter(Collision other)
+  
+
+    private void OnTriggerEnter(Collider other)
     {
         if (photonView.IsMine != true)
             return;
 
         if (other.gameObject.layer == LayerMask.NameToLayer("Dragon"))
         {
-            Vector3 vec = transform.position-other.transform.position;
-           
+            Vector3 vec = transform.position - other.transform.position;
+
             GetHitByDragon(vec);
         }
     }
@@ -422,4 +431,36 @@ public class PlayerController : MonoBehaviourPun
         m_player.m_rigidbody.AddForce(vec * m_fDropkickPower, ForceMode.Impulse);
     }
 
+  
+
+    public void Die()
+    {
+        m_state = State.Die;
+        m_gFX.SetActive(false);
+        m_masterGroundChecker.gameObject.SetActive(false);
+        m_respawnCoroutine=StartCoroutine(RespawnCoroutine());
+    }
+
+  
+
+    public IEnumerator RespawnCoroutine()
+    {
+        yield return new WaitForSeconds(m_fRespawnTime);
+        m_masterGroundChecker.gameObject.SetActive(true);
+        m_gFX.SetActive(true);
+        transform.position = m_respawnPosition.position;
+        m_state = State.Idle;
+        StopCoroutine(m_respawnCoroutine);
+    }
+
+    public IEnumerator RespawnTimer()
+    {
+        int timer=7;
+
+        while(timer>0)
+        {
+            yield return new WaitForSeconds(1f);
+            timer--;
+        }
+    }
 }

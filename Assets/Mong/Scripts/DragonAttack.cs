@@ -9,9 +9,10 @@ public class DragonAttack : MonoBehaviourPun
     // ÄÚ·çÆ¾ + translate + trigger ??
     public GameObject[] attackPosition = new GameObject[4];
     public GameObject[] TrainbPosition = new GameObject[2];
-    public GameObject dragon;
+    public Dragon m_dragon;
     public float dragonTime;
-    public float speed;
+    public float m_fVelocity;
+    
 
     private void Start()
     {
@@ -20,11 +21,16 @@ public class DragonAttack : MonoBehaviourPun
             Destroy(this);
         }
             StartCoroutine(DragonAttackStart());
+
+        m_dragon.m_rigidbody.velocity = transform.forward*m_fVelocity;
     }
 
     private void Update()
     {
-        dragon.transform.Translate(Vector3.forward * Time.deltaTime * speed, Space.Self);
+        //dragon.transform.Translate(Vector3.forward * Time.deltaTime * speed, Space.Self);
+
+        m_dragon.m_rigidbody.velocity = m_dragon.transform.forward * m_fVelocity;
+
     }
 
 
@@ -39,8 +45,8 @@ public class DragonAttack : MonoBehaviourPun
         {
             yield return new WaitForSeconds(dragonTime);
             int q = Random.Range(0, 4);
-            dragon.transform.position = attackPosition[q].transform.position;
-            dragon.transform.rotation = attackPosition[q].transform.rotation;
+            m_dragon.transform.position = attackPosition[q].transform.position;
+            m_dragon.transform.rotation = attackPosition[q].transform.rotation;
         }
     }
 

@@ -2107,11 +2107,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_player: {fileID: 0}
   m_cubeManager: {fileID: 0}
+  m_gFX: {fileID: 6716977911127047464}
+  m_respawnPosition: {fileID: 0}
   m_fPuchTime: 0.47
   m_fDropkickTime: 0.75
   m_fDizzyTime: 1
   m_fDownTime: 2.5
   m_fRecoverTime: 1
+  m_fRespawnTime: 5
   m_fPunchRange: 2
   m_fPunchAngle: 60
   m_fPunchPower: 1
