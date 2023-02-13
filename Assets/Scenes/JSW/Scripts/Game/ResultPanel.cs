@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using TMPro.EditorUtilities;
+
 using UnityEngine;
 
 public class ResultPanel : MonoBehaviour
@@ -38,7 +38,7 @@ public class ResultPanel : MonoBehaviour
         yellowTeamPercent.text = "" + yelBlockCount + "%";
         blueTeamPercent.text = "" + blueBlockCount + "%";
 
-        RectTransform temptransform;
+       
 
     }
 

@@ -2121,6 +2121,7 @@ MonoBehaviour:
   m_fDropkickRange: 2
   m_fDropkickAngle: 30
   m_fDropkickPower: 2
+  StartPos: []
   m_fTeamNumber: 0
   m_masterGroundChecker: {fileID: 3668222671046785350}
 --- !u!54 &6716977910464075596

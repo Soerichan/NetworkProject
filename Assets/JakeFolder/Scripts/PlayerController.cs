@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviourPun
     [SerializeField]
     public float m_fDropkickPower;
 
-
+    public GameObject[] StartPos=new GameObject[2];
 
     State m_state = State.Idle;
 
@@ -72,13 +72,17 @@ public class PlayerController : MonoBehaviourPun
         m_player = GetComponent<Player>();
         m_playerAnimator=GetComponent<PlayerAnimator>();
         m_maskPlayer= LayerMask.NameToLayer("Player");
+        
     }
 
     private void Start()
     {
         m_cubeManager = GameObject.Find("Map").GetComponent<CubeManager>();
-       m_respawnPosition= GameObject.Find("RespawnPosition").transform;
         m_fTeamNumber = PhotonNetwork.LocalPlayer.GetPlayerNumber() % 2 == 0 ? 0 : 1;
+        StartPos = new GameObject[2];
+        StartPos[0] = GameObject.Find("YellowStartPos").GameObject();
+        StartPos[1] = GameObject.Find("BlueStartPos").GameObject();
+        m_respawnPosition= StartPos[(int)m_fTeamNumber].transform;
 
     }
     private void Update()
