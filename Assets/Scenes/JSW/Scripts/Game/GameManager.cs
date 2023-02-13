@@ -30,6 +30,9 @@ namespace jsw
 		[SerializeField]
 		private GameObject[] TeamStartPosition;
 
+		[SerializeField]
+		private RoundManager m_roundManager;
+
 		private void Start()
 		{
 			if (PhotonNetwork.InRoom)
@@ -129,10 +132,21 @@ namespace jsw
                 PhotonNetwork.Instantiate("PlayerB", TeamStartPosition[1].transform.position+position, rotation, 0);
 			}
 
-			
+
+			m_roundManager = GameObject.Find("RoundManager").GetComponent<RoundManager>();
+			StartCoroutine(ReadyCoroutine());
+
+
 
 
 		}
+
+		
+		private IEnumerator ReadyCoroutine()
+		{
+			yield return new WaitForSeconds(3f);
+            m_roundManager.RoundStart();
+        }
 
 		private void TestGameStart()
 		{
