@@ -2198,10 +2198,10 @@ MonoBehaviour:
   prefixField: -1
   Synchronization: 3
   OwnershipTransfer: 0
-  observableSearch: 2
+  observableSearch: 0
   ObservedComponents:
-  - {fileID: 6716977910464075595}
   - {fileID: 7450355133282877163}
+  - {fileID: 6716977909893451780}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

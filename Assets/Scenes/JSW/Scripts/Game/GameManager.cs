@@ -23,10 +23,12 @@ namespace jsw
 		private TMP_Text timer;
 		private float sec;
 		private int min;
+		private int timerStop=0;
 		[SerializeField]
 		private List<Image> images = new List<Image>();
 
-		private List<GameObject> players = new List<GameObject>();
+		[SerializeField]
+		private GameObject[] TeamStartPosition;
 
 		[SerializeField]
 		private RoundManager m_roundManager;
@@ -46,12 +48,16 @@ namespace jsw
 		}
 		private void Update()
 		{
-			sec += Time.deltaTime;
-			if (sec > 60) { min++; sec = 0; }
-			timer.text = "" + min + ":" + (int)sec;
+			MainTimer();
 
-		}
 
+        }
+		public void MainTimer()
+		{
+            sec += timerStop*Time.deltaTime;
+            if (sec > 60) { min++; sec = 0; }
+            timer.text = "" + min + ":" + (int)sec;
+        }
 		#region PUN Callback
 
 		public override void OnConnectedToMaster()
@@ -97,7 +103,7 @@ namespace jsw
 		{
 			if (PhotonNetwork.LocalPlayer.ActorNumber == newMasterClient.ActorNumber)
 			{
-				StartCoroutine(SpawnAsteroid());
+				//마스터가 튕겼을때 새로 반응 추가
 			}
 		}
 
@@ -105,20 +111,25 @@ namespace jsw
 
 		private void GameStart()
 		{
-
-			float angularStart = (360.0f / PhotonNetwork.CurrentRoom.PlayerCount) * PhotonNetwork.LocalPlayer.GetPlayerNumber();
-			float x = 20.0f * Mathf.Sin(angularStart * Mathf.Deg2Rad);
-			float z = 20.0f * Mathf.Cos(angularStart * Mathf.Deg2Rad);
-			Vector3 position = new Vector3(x, 0.0f, z);
-			Quaternion rotation = Quaternion.Euler(0.0f, angularStart, 0.0f);
-
+            timerStop = 1;
+            
 			if (PhotonNetwork.LocalPlayer.GetPlayerNumber() % 2 == 0)
 			{
-				players.Add(PhotonNetwork.Instantiate("PlayerY", position, rotation, 0));
+                float angularStart = (360.0f / PhotonNetwork.CurrentRoom.PlayerCount) * (PhotonNetwork.LocalPlayer.GetPlayerNumber()*0.5f);
+                float x = 20.0f * Mathf.Sin(angularStart * Mathf.Deg2Rad);
+                float z = 20.0f * Mathf.Cos(angularStart * Mathf.Deg2Rad);
+                Vector3 position = new Vector3(x, 0.0f, z);
+                Quaternion rotation = Quaternion.Euler(0.0f, angularStart, 0.0f);
+                PhotonNetwork.Instantiate("PlayerY",TeamStartPosition[0].transform.position+ position, rotation, 0);
 			}
 			else
 			{
-				players.Add(PhotonNetwork.Instantiate("PlayerB", position, rotation, 0));
+                float angularStart = (360.0f / PhotonNetwork.CurrentRoom.PlayerCount) * ((PhotonNetwork.LocalPlayer.GetPlayerNumber()-1)*0.5f);
+                float x = 20.0f * Mathf.Sin(angularStart * Mathf.Deg2Rad);
+                float z = 20.0f * Mathf.Cos(angularStart * Mathf.Deg2Rad);
+                Vector3 position = new Vector3(x, 0.0f, z);
+                Quaternion rotation = Quaternion.Euler(0.0f, angularStart, 0.0f);
+                PhotonNetwork.Instantiate("PlayerB", TeamStartPosition[1].transform.position+position, rotation, 0);
 			}
 
 
@@ -127,7 +138,8 @@ namespace jsw
 
 
 
-        }
+
+		}
 
 		
 		private IEnumerator ReadyCoroutine()
@@ -138,19 +150,27 @@ namespace jsw
 
 		private void TestGameStart()
 		{
-			float angularStart = (360.0f / PhotonNetwork.CurrentRoom.PlayerCount) * PhotonNetwork.LocalPlayer.GetPlayerNumber();
-			float x = 20.0f * Mathf.Sin(angularStart * Mathf.Deg2Rad);
-			float z = 20.0f * Mathf.Cos(angularStart * Mathf.Deg2Rad);
-			Vector3 position = new Vector3(x, 0.0f, z);
-			Quaternion rotation = Quaternion.Euler(0.0f, angularStart, 0.0f);
+			timerStop = 1;
+            if (PhotonNetwork.LocalPlayer.GetPlayerNumber() % 2 == 0)
+            {
+                float angularStart = (360.0f / PhotonNetwork.CurrentRoom.PlayerCount) * (PhotonNetwork.LocalPlayer.GetPlayerNumber() * 0.5f);
+                float x = 20.0f * Mathf.Sin(angularStart * Mathf.Deg2Rad);
+                float z = 20.0f * Mathf.Cos(angularStart * Mathf.Deg2Rad);
+                Vector3 position = new Vector3(x, 0.0f, z);
+                Quaternion rotation = Quaternion.Euler(0.0f, angularStart, 0.0f);
+                PhotonNetwork.Instantiate("PlayerY", TeamStartPosition[0].transform.position + position, rotation, 0);
+            }
+            else
+            {
+                float angularStart = (360.0f / PhotonNetwork.CurrentRoom.PlayerCount) * ((PhotonNetwork.LocalPlayer.GetPlayerNumber() - 1) * 0.5f);
+                float x = 20.0f * Mathf.Sin(angularStart * Mathf.Deg2Rad);
+                float z = 20.0f * Mathf.Cos(angularStart * Mathf.Deg2Rad);
+                Vector3 position = new Vector3(x, 0.0f, z);
+                Quaternion rotation = Quaternion.Euler(0.0f, angularStart, 0.0f);
+                PhotonNetwork.Instantiate("PlayerB", TeamStartPosition[1].transform.position + position, rotation, 0);
+            }
 
-			if (PhotonNetwork.LocalPlayer.GetPlayerNumber() % 2 == 0)
-				PhotonNetwork.Instantiate("PlayerY", position, rotation, 0);
-			else
-				PhotonNetwork.Instantiate("PlayerB", position, rotation, 0);
-
-			StartCoroutine(SpawnAsteroid());
-		}
+        }
 
 		private IEnumerator StartCountDown()
 		{
@@ -205,43 +225,6 @@ namespace jsw
 			infoText.text = info;
 		}
 
-		private IEnumerator SpawnAsteroid()
-		{
-			while (true)
-			{
-				yield return new WaitForSeconds(Random.Range(3, 5));
-
-				Vector2 direction = Random.insideUnitCircle;
-				Vector3 position = Vector3.zero;
-
-				if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
-				{
-					// Make it appear on the left/right side
-					position = new Vector3(Mathf.Sign(direction.x) * Camera.main.orthographicSize * Camera.main.aspect, 0, direction.y * Camera.main.orthographicSize);
-				}
-				else
-				{
-					// Make it appear on the top/bottom
-					position = new Vector3(direction.x * Camera.main.orthographicSize * Camera.main.aspect, 0, Mathf.Sign(direction.y) * Camera.main.orthographicSize);
-				}
-
-				// Offset slightly so we are not out of screen at creation time (as it would destroy the asteroid right away)
-				position -= position.normalized * 0.1f;
-
-
-				Vector3 force = -position.normalized * 1000.0f;
-				Vector3 torque = Random.insideUnitSphere * Random.Range(100.0f, 300.0f);
-				object[] instantiationData = { force, torque };
-
-				if (Random.Range(0, 10) < 5)
-				{
-					PhotonNetwork.InstantiateRoomObject("BigStone", position, Quaternion.Euler(Random.value * 360.0f, Random.value * 360.0f, Random.value * 360.0f), 0, instantiationData);
-				}
-				else
-				{
-					PhotonNetwork.InstantiateRoomObject("SmallStone", position, Quaternion.Euler(Random.value * 360.0f, Random.value * 360.0f, Random.value * 360.0f), 0, instantiationData);
-				}
-			}
-		}
+		
 	}
 }

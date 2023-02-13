@@ -139,6 +139,15 @@ public class Player : MonoBehaviourPun, IPunObservable
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        
+        // 순서주의 : 스트림의 주는 순서와 받는 순서를 동일하게
+        if (stream.IsWriting)
+        {
+            stream.SendNext(transform.position);
+        }
+        else  // stream.IsReading
+        {
+            transform.position = (Vector3)stream.ReceiveNext();
+        }
+        //throw new System.NotImplementedException();
     }
 }
