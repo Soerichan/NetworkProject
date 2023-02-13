@@ -93,9 +93,21 @@ public class RoomPanel : MonoBehaviour
 	{
 		PhotonNetwork.CurrentRoom.IsOpen = false;
 		PhotonNetwork.CurrentRoom.IsVisible = false;
-		
 
-		PhotonNetwork.LoadLevel("TestMapScene");
+
+			int MapSelection;
+			MapSelection = Random.Range(0, 2);
+
+			switch(MapSelection)
+			{
+				case 0:
+                    PhotonNetwork.LoadLevel("LavaScene");
+                    break;
+				case 1:
+                    PhotonNetwork.LoadLevel("SubwayScene");
+                    break;
+			}
+		
 	}
 	public void OnShuffleButtonClicked()
 	{
