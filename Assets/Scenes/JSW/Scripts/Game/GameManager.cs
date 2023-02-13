@@ -27,7 +27,8 @@ namespace jsw
 		[SerializeField]
 		private List<Image> images = new List<Image>();
 
-		private List<GameObject> players = new List<GameObject>();
+		[SerializeField]
+		private GameObject[] TeamStartPosition;
 
 		private void Start()
 		{
@@ -108,18 +109,24 @@ namespace jsw
 		private void GameStart()
 		{
             timerStop = 1;
-            float angularStart = (360.0f / PhotonNetwork.CurrentRoom.PlayerCount) * PhotonNetwork.LocalPlayer.GetPlayerNumber();
-			float x = 20.0f * Mathf.Sin(angularStart * Mathf.Deg2Rad);
-			float z = 20.0f * Mathf.Cos(angularStart * Mathf.Deg2Rad);
-			Vector3 position = new Vector3(x, 0.0f, z);
-			Quaternion rotation = Quaternion.Euler(0.0f, angularStart, 0.0f);
+            
 			if (PhotonNetwork.LocalPlayer.GetPlayerNumber() % 2 == 0)
 			{
-				players.Add(PhotonNetwork.Instantiate("PlayerY", position, rotation, 0));
+                float angularStart = (360.0f / PhotonNetwork.CurrentRoom.PlayerCount) * (PhotonNetwork.LocalPlayer.GetPlayerNumber()*0.5f);
+                float x = 20.0f * Mathf.Sin(angularStart * Mathf.Deg2Rad);
+                float z = 20.0f * Mathf.Cos(angularStart * Mathf.Deg2Rad);
+                Vector3 position = new Vector3(x, 0.0f, z);
+                Quaternion rotation = Quaternion.Euler(0.0f, angularStart, 0.0f);
+                PhotonNetwork.Instantiate("PlayerY",TeamStartPosition[0].transform.position+ position, rotation, 0);
 			}
 			else
 			{
-				players.Add(PhotonNetwork.Instantiate("PlayerB", position, rotation, 0));
+                float angularStart = (360.0f / PhotonNetwork.CurrentRoom.PlayerCount) * ((PhotonNetwork.LocalPlayer.GetPlayerNumber()-1)*0.5f);
+                float x = 20.0f * Mathf.Sin(angularStart * Mathf.Deg2Rad);
+                float z = 20.0f * Mathf.Cos(angularStart * Mathf.Deg2Rad);
+                Vector3 position = new Vector3(x, 0.0f, z);
+                Quaternion rotation = Quaternion.Euler(0.0f, angularStart, 0.0f);
+                PhotonNetwork.Instantiate("PlayerB", TeamStartPosition[1].transform.position+position, rotation, 0);
 			}
 
 			

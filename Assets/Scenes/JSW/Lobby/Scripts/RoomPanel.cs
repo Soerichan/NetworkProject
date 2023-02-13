@@ -105,8 +105,8 @@ namespace jsw
             PhotonNetwork.CurrentRoom.IsOpen = false;
             PhotonNetwork.CurrentRoom.IsVisible = false;
 
-
-            PhotonNetwork.LoadLevel("TestMapScene");
+            int rand = Random.Range(1, 3);
+            PhotonNetwork.LoadLevel(rand);
         }
         public void OnShuffleButtonClicked()
         {
