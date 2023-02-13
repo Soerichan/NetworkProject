@@ -6,17 +6,20 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using Jake;
+using Unity.VisualScripting;
 
-public enum State { Idle, Punch, Dropkick, Dizzy, Down, Recover, Run };
+public enum State { Idle, Punch, Dropkick, Dizzy, Down, Recover, Run ,Die};
 
 
 public class PlayerController : MonoBehaviourPun
 {
-    private Player m_player;
+    public Player m_player;
     private PlayerAnimator m_playerAnimator;
+    public CubeManager m_cubeManager;
+    public GameObject m_gFX;
+    public Transform m_respawnPosition;
 
-    
-    
+
 
     [SerializeField]
     public float m_fPuchTime;
@@ -28,7 +31,8 @@ public class PlayerController : MonoBehaviourPun
     public float m_fDownTime;
     [SerializeField]
     public float m_fRecoverTime;
-
+    [SerializeField]
+    public float m_fRespawnTime;
     
     [SerializeField]
     public float m_fPunchRange;
@@ -61,31 +65,28 @@ public class PlayerController : MonoBehaviourPun
 
     public Jake.MasterGroundChecker m_masterGroundChecker;
 
+    public Coroutine m_respawnCoroutine;
+
     private void Awake()
     {
         m_player = GetComponent<Player>();
         m_playerAnimator=GetComponent<PlayerAnimator>();
-        m_maskPlayer= LayerMask.GetMask("Player");
+        m_maskPlayer= LayerMask.NameToLayer("Player");
     }
 
     private void Start()
     {
-        
-         
-        if(photonView.IsMine!=true)
-        {
-
-            Destroy(this);
-        }
-
-        m_masterGroundChecker.m_fTeam = m_fTeamNumber;
+        m_cubeManager = GameObject.Find("Map").GetComponent<CubeManager>();
+       m_respawnPosition= GameObject.Find("RespawnPosition").transform;
         m_fTeamNumber = PhotonNetwork.LocalPlayer.GetPlayerNumber() % 2 == 0 ? 0 : 1;
 
     }
     private void Update()
     {
+        if (photonView.IsMine != true)
+            return;
 
-       switch(m_state)
+        switch (m_state)
         {
             case State.Idle:
 
@@ -117,7 +118,10 @@ public class PlayerController : MonoBehaviourPun
             case State.Run:
                 Accelate();
                 Rotate();
-               
+                break;
+
+            case State.Die:
+
                 break;
         }
        
@@ -143,38 +147,43 @@ public class PlayerController : MonoBehaviourPun
 
     public void Punch()
     {
-       
-            m_playerAnimator.Punch();
+        if (photonView.IsMine != true)
+            return;
+
+        m_playerAnimator.Punch();
             m_state = State.Punch;
             m_coroutinePunch = StartCoroutine(PunchToIdle());
             
-            photonView.RPC("PunchJudgment", RpcTarget.MasterClient, transform.position, transform.forward,this);
+            photonView.RPC("PunchJudgment", RpcTarget.MasterClient, transform.position, transform.forward,m_fTeamNumber);
 
 
 
     }
 
     [PunRPC]
-    public void PunchJudgment(Vector3 vec,Vector3 forward , PlayerController remote)
+    public void PunchJudgment(Vector3 vec,Vector3 forward , float team)
     {
         if (PhotonNetwork.IsMasterClient)
         {
             // 1. 범위내에 있는가
             Collider[] colliders = Physics.OverlapSphere(vec, m_fPunchRange, m_maskPlayer);
-
-
-
-            for (int i = 0; i < colliders.Length; i++)
+            if (colliders.Length==0)
             {
+                return;
+            }
 
+
+                for (int i = 0; i < colliders.Length; i++)
+                 {
+               
                 m_playerOpponent = colliders[i].GetComponent<PlayerController>();
 
-                if (m_playerOpponent != remote && m_playerOpponent.m_fTeamNumber != remote.m_fTeamNumber)
-                {
+                     if (m_playerOpponent.m_fTeamNumber != team)
+                     {
 
                     break;
-                }
-            }
+                     }
+                 }
 
 
             Vector3 dirToTarget = (m_playerOpponent.transform.position - vec).normalized;
@@ -193,7 +202,9 @@ public class PlayerController : MonoBehaviourPun
 
     public void Punched(Vector3 vec)
     {
-      
+        if (photonView.IsMine != true)
+            return;
+
         Dizzy();
         m_player.Hurt();
         m_player.m_rigidbody.AddForce(vec*m_fPunchPower, ForceMode.Impulse);
@@ -204,23 +215,30 @@ public class PlayerController : MonoBehaviourPun
 
     public void Dropkick()
     {
-        
-            m_playerAnimator.Dropkick();
+        if (photonView.IsMine != true)
+            return;
+
+
+        m_playerAnimator.Dropkick();
             m_state = State.Dropkick;
             m_coroutineDropkick = StartCoroutine(DropkickToIdle());
            
-        photonView.RPC("DropkickJubgment", RpcTarget.MasterClient, transform.position, transform.forward, this);
+        photonView.RPC("DropkickJubgment", RpcTarget.MasterClient, transform.position, transform.forward, m_fTeamNumber);
 
 
     }
 
-    public void DropkickJubgment(Vector3 vec, Vector3 forward, PlayerController remote)
+    [PunRPC]
+    public void DropkickJubgment(Vector3 vec, Vector3 forward, float team)
     {
         if (PhotonNetwork.IsMasterClient)
         {
             // 1. 범위내에 있는가
             Collider[] colliders = Physics.OverlapSphere(vec, m_fDropkickRange, m_maskPlayer);
-
+            if (colliders.Length == 0)
+            {
+                return;
+            }
 
 
             for (int i = 0; i < colliders.Length; i++)
@@ -228,7 +246,7 @@ public class PlayerController : MonoBehaviourPun
 
                 m_playerOpponent = colliders[i].GetComponent<PlayerController>();
 
-                if (m_playerOpponent != remote && m_playerOpponent.m_fTeamNumber != remote.m_fTeamNumber)
+                if (m_playerOpponent.m_fTeamNumber != team)
                 {
 
                     break;
@@ -250,6 +268,9 @@ public class PlayerController : MonoBehaviourPun
 
     public void Dropkicked(Vector3 vec)
     {
+        if (photonView.IsMine != true)
+            return;
+
         Down();
         m_player.Hurt();
         transform.forward = -vec;
@@ -258,7 +279,10 @@ public class PlayerController : MonoBehaviourPun
 
     public void Dizzy()
     {
-        if(m_state != State.Dizzy)
+        if (photonView.IsMine != true)
+            return;
+
+        if (m_state != State.Dizzy)
         {
         m_coroutineDizzy = StartCoroutine(DizzyToIdle());
         m_state=State.Dizzy;
@@ -270,6 +294,9 @@ public class PlayerController : MonoBehaviourPun
 
     public void Down()
     {
+        if (photonView.IsMine != true)
+            return;
+
         m_playerAnimator.Down();
         m_state=State.Down;
         m_coroutineDown = StartCoroutine(DownToIdle());
@@ -277,6 +304,9 @@ public class PlayerController : MonoBehaviourPun
 
     public void Recover()
     {
+        if (photonView.IsMine != true)
+            return;
+
         m_playerAnimator.Recover();
         m_state=State.Recover;
         m_coroutineRecover = StartCoroutine(RecoverToIdle());
@@ -284,7 +314,10 @@ public class PlayerController : MonoBehaviourPun
 
     public void Idle()
     {
-        if(m_player.m_rigidbody.velocity==new Vector3(0,0,0))
+        if (photonView.IsMine != true)
+            return;
+
+        if (m_player.m_rigidbody.velocity==new Vector3(0,0,0))
         {
             m_playerAnimator.Idle();
             m_state = State.Idle;
@@ -341,12 +374,93 @@ public class PlayerController : MonoBehaviourPun
     }
 
 
-    
+    public void GroundCheckCall(Collider other)
+    {
+        if (photonView.IsMine != true)
+            return;
+
+        Debug.Log("그라운드체크콜");
+        GroundColorChange newGroundColorChange = other.gameObject.GetComponent<GroundColorChange>();
+
+        float number = newGroundColorChange.m_fNumber;
+
+        photonView.RPC("GroundCheckJudgment", RpcTarget.MasterClient, number, m_fTeamNumber);
+
+    }
+
+    [PunRPC]
+    public void GroundCheckJudgment(float number, float team)
+    {
+        Debug.Log("그라운드체크젓지");
+        m_cubeManager.Paint(number, team);
+    }
 
 
     private void OnDrawGizmos()
     {
+        if (photonView.IsMine != true)
+            return;
+
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, m_fPunchRange);
+    }
+
+
+  
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (photonView.IsMine != true)
+            return;
+
+        if (other.gameObject.layer == LayerMask.NameToLayer("Dragon"))
+        {
+            Vector3 vec = transform.position - other.transform.position;
+
+            GetHitByDragon(vec);
+        }
+    }
+
+    public void GetHitByDragon(Vector3 vec)
+    {
+        if (photonView.IsMine != true|| m_state == State.Dizzy)
+            return;
+       
+        Dizzy();
+        m_player.Hurt();
+        m_player.m_rigidbody.AddForce(vec * m_fDropkickPower, ForceMode.Impulse);
+    }
+
+  
+
+    public void Die()
+    {
+        m_state = State.Die;
+        m_gFX.SetActive(false);
+        m_masterGroundChecker.gameObject.SetActive(false);
+        m_respawnCoroutine=StartCoroutine(RespawnCoroutine());
+    }
+
+  
+
+    public IEnumerator RespawnCoroutine()
+    {
+        yield return new WaitForSeconds(m_fRespawnTime);
+        m_masterGroundChecker.gameObject.SetActive(true);
+        m_gFX.SetActive(true);
+        transform.position = m_respawnPosition.position;
+        m_state = State.Idle;
+        StopCoroutine(m_respawnCoroutine);
+    }
+
+    public IEnumerator RespawnTimer()
+    {
+        int timer=7;
+
+        while(timer>0)
+        {
+            yield return new WaitForSeconds(1f);
+            timer--;
+        }
     }
 }
