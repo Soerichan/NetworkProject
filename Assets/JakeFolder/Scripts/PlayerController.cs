@@ -8,20 +8,27 @@ using UnityEngine;
 using Jake;
 using Unity.VisualScripting;
 using ObjectPool;
+using System.Globalization;
 
 public enum State { Idle, Punch, Dropkick, Dizzy, Down, Recover, Run ,Die};
 
 
 public class PlayerController : MonoBehaviourPun
 {
-    public Player m_player;
-    private PlayerAnimator m_playerAnimator;
-    public CubeManager m_cubeManager;
-    public GameObject m_gFX;
-    public Transform m_respawnPosition;
+    [Header("Player")]
+    public  Player           m_player;
+    private PlayerAnimator   m_playerAnimator;
+    public  GameObject       m_gFX;
+    public  Transform        m_respawnPosition;
+    State                    m_state = State.Idle;
+    public  float            m_fTeamNumber;
+    private PlayerController m_playerOpponent;
+    private LayerMask        m_maskPlayer;
+    public  Jake.MasterGroundChecker m_masterGroundChecker;
+    
 
 
-
+    [Header("Config")]
     [SerializeField]
     public float m_fPuchTime;
     [SerializeField]
@@ -51,37 +58,38 @@ public class PlayerController : MonoBehaviourPun
 
 
 
-    State m_state = State.Idle;
-
+    [Header("Coroutine")]
     private Coroutine m_coroutinePunch;
     private Coroutine m_coroutineDropkick;
     private Coroutine m_coroutineDizzy;
     private Coroutine m_coroutineDown;
     private Coroutine m_coroutineRecover;
     private Coroutine m_coroutineHPRegen;
+    private Coroutine m_respawnCoroutine;
 
-    private LayerMask m_maskPlayer;
-    private PlayerController m_playerOpponent;
-    public float m_fTeamNumber;
-    public PoolManager m_poolManager;
 
-    public Jake.MasterGroundChecker m_masterGroundChecker;
+    [Header("Manager")]
+    public PoolManager      m_poolManager;
+    public SoundManager     m_soundManager;
+    public ParticleManager  m_particleManager;
+    public CubeManager      m_cubeManager;
 
-    public Coroutine m_respawnCoroutine;
+
 
     private void Awake()
     {
-        m_player = GetComponent<Player>();
-        m_playerAnimator=GetComponent<PlayerAnimator>();
-        m_maskPlayer= LayerMask.NameToLayer("Player");
+        m_player            = GetComponent<Player>();
+        m_playerAnimator    = GetComponent<PlayerAnimator>();
+        m_maskPlayer        = LayerMask.NameToLayer("Player");
     }
 
     private void Start()
     {
-        m_cubeManager = GameObject.Find("Map").GetComponent<CubeManager>();
-       m_respawnPosition= GameObject.Find("RespawnPosition").transform;
-        m_fTeamNumber = PhotonNetwork.LocalPlayer.GetPlayerNumber() % 2 == 0 ? 0 : 1;
-
+        m_cubeManager       = GameObject.Find("Map").GetComponent<CubeManager>();
+        m_poolManager       = GameObject.Find("PoolManager").GetComponent<PoolManager>();
+        m_respawnPosition   = GameObject.Find("RespawnPosition").transform;
+        
+        m_fTeamNumber       = PhotonNetwork.LocalPlayer.GetPlayerNumber() % 2 == 0 ? 0 : 1;
     }
     private void Update()
     {
@@ -91,18 +99,14 @@ public class PlayerController : MonoBehaviourPun
         switch (m_state)
         {
             case State.Idle:
-
                 Accelate();
-                Rotate();
-              
+                Rotate();              
                 break;
 
-            case State.Punch:
-                
+            case State.Punch:                
                 break;
 
-            case State.Dropkick:
-               
+            case State.Dropkick:               
                 break;
 
             case State.Dizzy:
@@ -123,7 +127,6 @@ public class PlayerController : MonoBehaviourPun
                 break;
 
             case State.Die:
-
                 break;
         }
        
@@ -132,9 +135,7 @@ public class PlayerController : MonoBehaviourPun
     public void Accelate()
     {
         float vInput = Input.GetAxis("Vertical");
-
         m_player.Accelate(vInput);
-
         m_playerAnimator.Move();
         m_state = State.Run;
 
@@ -143,21 +144,25 @@ public class PlayerController : MonoBehaviourPun
     public void Rotate()
     {
         float hInput = Input.GetAxis("Horizontal");
-
         m_player.Rotate(hInput);
     }
 
     public void Punch()
     {
+        m_soundManager.attackSound.Play();
+        m_particleManager.attackParticle.Play();
+      
         if (photonView.IsMine != true)
             return;
 
         m_playerAnimator.Punch();
-            m_state = State.Punch;
-            m_coroutinePunch = StartCoroutine(PunchToIdle());
+        m_state = State.Punch;
+        m_coroutinePunch = StartCoroutine(PunchToIdle());
+          
+        photonView.RPC("PunchJudgment", RpcTarget.MasterClient, transform.position, transform.forward,m_fTeamNumber);
             
-            photonView.RPC("PunchJudgment", RpcTarget.MasterClient, transform.position, transform.forward,m_fTeamNumber);
-       // m_poolManager.Get()
+
+            
 
 
     }
@@ -174,36 +179,32 @@ public class PlayerController : MonoBehaviourPun
                 return;
             }
 
-
                 for (int i = 0; i < colliders.Length; i++)
                  {
                
                 m_playerOpponent = colliders[i].GetComponent<PlayerController>();
 
                      if (m_playerOpponent.m_fTeamNumber != team)
-                     {
-
-                    break;
-                     }
+                         break;
+                     
                  }
-
 
             Vector3 dirToTarget = (m_playerOpponent.transform.position - vec).normalized;
 
             // 2. 각도내에 있는가
             if (Vector3.Dot(forward, dirToTarget) > Mathf.Cos(m_fPunchAngle * 0.5f * Mathf.Deg2Rad))
             {
-
                 m_playerOpponent.Punched(dirToTarget);
             }
-
-        }
-        
+        }    
     }
 
 
     public void Punched(Vector3 vec)
     {
+        m_soundManager.takeHitSound.Play();    
+        m_particleManager.takeHitParticle.Play();
+
         if (photonView.IsMine != true)
             return;
 
@@ -217,17 +218,17 @@ public class PlayerController : MonoBehaviourPun
 
     public void Dropkick()
     {
+        m_soundManager.attackSound.Play();
+        m_particleManager.attackParticle.Play();
+
         if (photonView.IsMine != true)
             return;
 
-
         m_playerAnimator.Dropkick();
-            m_state = State.Dropkick;
-            m_coroutineDropkick = StartCoroutine(DropkickToIdle());
+        m_state = State.Dropkick;
+        m_coroutineDropkick = StartCoroutine(DropkickToIdle());
            
         photonView.RPC("DropkickJubgment", RpcTarget.MasterClient, transform.position, transform.forward, m_fTeamNumber);
-
-
     }
 
     [PunRPC]
@@ -242,7 +243,6 @@ public class PlayerController : MonoBehaviourPun
                 return;
             }
 
-
             for (int i = 0; i < colliders.Length; i++)
             {
 
@@ -255,21 +255,20 @@ public class PlayerController : MonoBehaviourPun
                 }
             }
 
-
-            Vector3 dirToTarget = (m_playerOpponent.transform.position - vec).normalized;
-
             // 2. 각도내에 있는가
+            Vector3 dirToTarget = (m_playerOpponent.transform.position - vec).normalized;
             if (Vector3.Dot(forward, dirToTarget) > Mathf.Cos(m_fDropkickAngle * 0.5f * Mathf.Deg2Rad))
             {
-
-                m_playerOpponent.Dropkicked(dirToTarget);
-                
+                m_playerOpponent.Dropkicked(dirToTarget);                
             }
         }
     }
 
     public void Dropkicked(Vector3 vec)
     {
+        m_soundManager.takeHitSound.Play();
+        m_particleManager.takeHitParticle.Play();
+
         if (photonView.IsMine != true)
             return;
 
@@ -365,27 +364,14 @@ public class PlayerController : MonoBehaviourPun
         m_playerAnimator.Idle();
     }
 
-    private IEnumerator KnockbackPunch()
-    {
-        yield return new WaitForSeconds(0.3f);
-    }
-
-    private IEnumerator KnockbackDropkick()
-    {
-        yield return new WaitForSeconds(1f);
-    }
-
 
     public void GroundCheckCall(Collider other)
     {
         if (photonView.IsMine != true)
             return;
-
-        Debug.Log("그라운드체크콜");
+      
         GroundColorChange newGroundColorChange = other.gameObject.GetComponent<GroundColorChange>();
-
         float number = newGroundColorChange.m_fNumber;
-
         photonView.RPC("GroundCheckJudgment", RpcTarget.MasterClient, number, m_fTeamNumber);
 
     }
@@ -393,8 +379,7 @@ public class PlayerController : MonoBehaviourPun
     [PunRPC]
     public void GroundCheckJudgment(float number, float team)
     {
-        Debug.Log("그라운드체크젓지");
-        m_cubeManager.Paint(number, team);
+         m_cubeManager.Paint(number, team);
     }
 
 
@@ -418,7 +403,6 @@ public class PlayerController : MonoBehaviourPun
         if (other.gameObject.layer == LayerMask.NameToLayer("Dragon"))
         {
             Vector3 vec = transform.position - other.transform.position;
-
             GetHitByDragon(vec);
         }
     }
@@ -437,6 +421,11 @@ public class PlayerController : MonoBehaviourPun
 
     public void Die()
     {
+        if (photonView.IsMine != true)
+            return;
+
+        m_particleManager.fireParticle.Play();
+        m_soundManager.walkSound.Play();        
         m_state = State.Die;
         m_gFX.SetActive(false);
         m_masterGroundChecker.gameObject.SetActive(false);
@@ -453,16 +442,5 @@ public class PlayerController : MonoBehaviourPun
         transform.position = m_respawnPosition.position;
         m_state = State.Idle;
         StopCoroutine(m_respawnCoroutine);
-    }
-
-    public IEnumerator RespawnTimer()
-    {
-        int timer=7;
-
-        while(timer>0)
-        {
-            yield return new WaitForSeconds(1f);
-            timer--;
-        }
     }
 }

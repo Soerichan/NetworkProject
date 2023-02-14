@@ -13,7 +13,7 @@ public class ScoreUI : MonoBehaviour
 
     private void Update()
     {
-        m_textBlueScore.text = m_fBlueScore.ToString();
-        m_textYellowScore.text = m_fYellowScore.ToString();
+        m_textBlueScore.text    = m_fBlueScore.ToString();
+        m_textYellowScore.text  = m_fYellowScore.ToString();
     }
 }

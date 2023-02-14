@@ -7,22 +7,18 @@ public class Lava : MonoBehaviour
     public Collider m_collider;
     private LayerMask m_mask;
 
-    // Start is called before the first frame update
     void Start()
-    {
-        
+    {       
         m_collider = GetComponent<Collider>();
         m_mask = LayerMask.NameToLayer("Player");
     }
 
-  
-
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.layer != m_mask)
+       if (other.gameObject.layer != m_mask)
             return;
 
        PlayerController player= other.gameObject.GetComponent<PlayerController>();
-        player.Die();
+       player.Die();
     }
 }

@@ -7,15 +7,12 @@ using Cinemachine;
 public class PlayerCamera : MonoBehaviourPun
 {
 
-    PlayerController[] m_player;
+    PlayerController[]       m_player;
     CinemachineVirtualCamera m_virtualCamera;
-    // Start is called before the first frame update
+
     void Start()
     {
-        m_virtualCamera = GetComponent<CinemachineVirtualCamera>();
-        
-
-       
+        m_virtualCamera = GetComponent<CinemachineVirtualCamera>();       
     }
 
     public void RoundStart()
