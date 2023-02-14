@@ -83,7 +83,7 @@ namespace ObjectPool
         {
             Stack<GameObject> stack = poolDic[instance.name];
             Poolable poolable = poolPrefab.Find((x) => instance.name == x.container.name);
-            instance.transform.parent = poolable.container;//컨테이너 이름 넣어주기;
+            instance.transform.parent = poolable.container;
             instance.SetActive(false);
             stack.Push(instance);
         }
