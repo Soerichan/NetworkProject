@@ -257,9 +257,9 @@ MonoBehaviour:
   - {fileID: 396213627}
   - {fileID: 2034374583}
   TrainbPosition: []
-  dragon: {fileID: 1616605994}
+  m_dragon: {fileID: 1616605999}
   dragonTime: 5
-  speed: 50
+  m_fVelocity: 50
 --- !u!4 &223758232
 Transform:
   m_ObjectHideFlags: 0
@@ -330,6 +330,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: MongManager
       objectReference: {fileID: 0}
+    - target: {fileID: 8751559998988415472, guid: b77418310a9ba9b448b7bb726c460d51, type: 3}
+      propertyPath: dragon
+      value: 
+      objectReference: {fileID: 1616605998}
+    - target: {fileID: 8751559998988415472, guid: b77418310a9ba9b448b7bb726c460d51, type: 3}
+      propertyPath: uptrain
+      value: 
+      objectReference: {fileID: 1134961263}
+    - target: {fileID: 8751559998988415472, guid: b77418310a9ba9b448b7bb726c460d51, type: 3}
+      propertyPath: downtrain
+      value: 
+      objectReference: {fileID: 949409891}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b77418310a9ba9b448b7bb726c460d51, type: 3}
 --- !u!1 &250877120 stripped
@@ -487,6 +499,10 @@ PrefabInstance:
     - target: {fileID: 4188299549034070004, guid: 357ad75424c7a3a499cbad137498af0d, type: 3}
       propertyPath: m_Name
       value: Map1 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332892684366338609, guid: 357ad75424c7a3a499cbad137498af0d, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4990784964342532875, guid: 357ad75424c7a3a499cbad137498af0d, type: 3}
       propertyPath: m_Name
@@ -1491,6 +1507,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1616605999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1616605994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 580710a32b66cc5489e5464a70bdd8e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_rigidbody: {fileID: 0}
 --- !u!1 &1652899029
 GameObject:
   m_ObjectHideFlags: 0
