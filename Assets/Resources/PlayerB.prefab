@@ -714,9 +714,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_player: {fileID: 0}
-  m_cubeManager: {fileID: 0}
   m_gFX: {fileID: 4921801922016046573}
   m_respawnPosition: {fileID: 0}
+  m_fTeamNumber: 1
+  m_masterGroundChecker: {fileID: 2566214459765062185}
   m_fPuchTime: 0.47
   m_fDropkickTime: 0.75
   m_fDizzyTime: 1
@@ -730,8 +731,9 @@ MonoBehaviour:
   m_fDropkickAngle: 30
   m_fDropkickPower: 2
   StartPos: []
-  m_fTeamNumber: 1
-  m_masterGroundChecker: {fileID: 2566214459765062185}
+  m_poolManager: {fileID: 0}
+  m_poolGetter: {fileID: 0}
+  m_cubeManager: {fileID: 0}
 --- !u!114 &4921801920367652506
 MonoBehaviour:
   m_ObjectHideFlags: 0
