@@ -14,8 +14,7 @@ namespace Mong
         public GameObject[] Characters = new GameObject[8];
 
         public WinManager win;
-        //public enum Fight{ Win, Lose }
-        //public Fight fight;
+        
         public bool bluewin;
 
         private void Start()
