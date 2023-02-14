@@ -7,7 +7,7 @@ public class SoundManager : MonoBehaviour
     [Header("사운드 끌어가기")]
     public AudioSource attackSound;
     public AudioSource takeHitSound;
-    public AudioSource walkSound;
+    public AudioSource paintSound;
     [Header("사운드 주체")]
     public AudioSource dragon;
     public AudioSource uptrain;
@@ -18,13 +18,9 @@ public class SoundManager : MonoBehaviour
 
     private void Start()
     {
-        dragon.clip = dragonSound;
-        uptrain.clip = trainSound;
-        downtrain.clip = trainSound;
+        dragon.clip     = dragonSound;
+        uptrain.clip    = trainSound;
+        downtrain.clip  = trainSound;
     }
-
-   
-
-
 
 }

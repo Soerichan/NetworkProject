@@ -11,7 +11,6 @@ namespace ObjectPool
         [SerializeField]
         public PoolManager poolManager;
 
-        // 리턴 할 곳 만들기?
         private void Start()
         {
             poolManager = FindObjectOfType<PoolManager>();
@@ -26,7 +25,6 @@ namespace ObjectPool
         { 
             yield return new WaitForSeconds(returnTime);
             poolManager.Release(gameObject);
-            // 리턴할곳 정해주기
         }
         
     }

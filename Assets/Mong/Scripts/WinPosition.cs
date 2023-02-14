@@ -13,8 +13,7 @@ namespace Mong
         public GameObject[] winCharacter = new GameObject[4];
         public GameObject[] loseCharacter = new GameObject[4];
 
-        //public enum Fight{ Win, Lose }
-        //public Fight fight;
+    
         public bool bluewin;
 
         private void Start()
@@ -29,19 +28,6 @@ namespace Mong
             {
                 Shuffle();
             }
-            //switch (fight)
-            //{
-            //    case Fight.Win:
-            //            Win();
-            //            Lose();
-            //        Debug.Log("111");
-            //        break;
-            //    case Fight.Lose:
-            //        Debug.Log("222");
-            //            break;
-            //    default:
-            //        break;
-            //}
         }
 
         public void Win()
