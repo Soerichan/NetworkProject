@@ -96,8 +96,6 @@ namespace ObjectPool
             public Transform container;
             public bool enableCreation;
         }
-
-       
        
     }
 }

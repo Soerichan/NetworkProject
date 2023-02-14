@@ -33,7 +33,7 @@ namespace Mong
         {
             if (GameObject.Find("Player"))
             {
-                //agent.destination = player.transform.position;
+                agent.destination = player.transform.position;
                 //transform.Translate(player.transform.position * Time.deltaTime * speed, Space.Self);
             }
             else return;

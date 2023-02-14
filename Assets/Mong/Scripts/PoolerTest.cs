@@ -14,7 +14,6 @@ public class PoolerTest : MonoBehaviour
     public Dictionary<string, GameObject> GetDic = new Dictionary<string, GameObject>();
 
     public PoolManager poolManager;
-
     // Update is called once per frame
     private void PoolAdd()
     {
@@ -41,8 +40,6 @@ public class PoolerTest : MonoBehaviour
 
     void Update()
     {
-        
-
         if (Input.GetKey(KeyCode.A))
         {
             //poolManager.Get(prefabs[0]);
@@ -59,10 +56,7 @@ public class PoolerTest : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.D))
         {
-            //poolManager.Get(prefabs[2]);
-            //GetDic.ContainsKey(Key2);
-            //GetDic.TryGetValue(Key2, out prefabs[2]);
-
+            poolManager.Get(prefabs[2]);
 
         }
         if (Input.GetKeyDown(KeyCode.F))
