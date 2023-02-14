@@ -138,8 +138,8 @@ namespace jsw
 
 
 
-
-		}
+			
+        }
 
 		
 		private IEnumerator ReadyCoroutine()
@@ -169,7 +169,7 @@ namespace jsw
                 Quaternion rotation = Quaternion.Euler(0.0f, angularStart, 0.0f);
                 PhotonNetwork.Instantiate("PlayerB", TeamStartPosition[1].transform.position + position, rotation, 0);
             }
-
+			
         }
 
 		private IEnumerator StartCountDown()

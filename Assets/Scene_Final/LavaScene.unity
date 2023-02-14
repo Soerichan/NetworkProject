@@ -1035,6 +1035,10 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 3242086573641836996, guid: 7bfa3baf35e0e1c4f84e2963aa7fe29c, type: 3}
+      propertyPath: m_rigidbody
+      value: 
+      objectReference: {fileID: 2075168583}
     - target: {fileID: 3242086573641837003, guid: 7bfa3baf35e0e1c4f84e2963aa7fe29c, type: 3}
       propertyPath: sceneViewId
       value: 1
@@ -3920,6 +3924,7 @@ MonoBehaviour:
   m_fLimitTime: 300
   m_timer: {fileID: 1934094724}
   m_UIManager: {fileID: 1145159913}
+  m_WinManager: {fileID: 1649763302}
   m_playerCamera: {fileID: 1036666001}
 --- !u!4 &1478480493
 Transform:
@@ -4176,6 +4181,51 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_lever: {fileID: 991147435}
   m_fLeverRange: 30
+--- !u!1 &1649763301
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1649763303}
+  - component: {fileID: 1649763302}
+  m_Layer: 0
+  m_Name: WinManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1649763302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1649763301}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fba76d8e3246194ba29ef898afbb025, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  teamWin: 0
+--- !u!4 &1649763303
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1649763301}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 18
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1696403249
 GameObject:
   m_ObjectHideFlags: 0
@@ -4857,6 +4907,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2064185318}
   m_CullTransparentMesh: 1
+--- !u!54 &2075168583 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 1215886683871343820, guid: 7bfa3baf35e0e1c4f84e2963aa7fe29c, type: 3}
+  m_PrefabInstance: {fileID: 513431107}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2083501428
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,11 +9,11 @@ using UnityEngine;
 public class PlayerController : MonoBehaviourPun
 {
 	private DoggyMan Doggy;
-	private CinemachineVirtualCamera camera;
+	
 	private void Awake()
 	{
 		Doggy = GetComponent<DoggyMan>();
-		camera = GameObject.Find("vcam1").GetComponent<CinemachineVirtualCamera>();
+		//camera = GameObject.Find("vcam1").GetComponent<CinemachineVirtualCamera>();
 	}
 
 	public void Start()
@@ -24,8 +24,8 @@ public class PlayerController : MonoBehaviourPun
 		//}
 		if (photonView.IsMine)
 		{
-			camera.LookAt=this.transform;
-			camera.Follow=this.transform;
+			//camera.LookAt=this.transform;
+			//camera.Follow=this.transform;
 		}
 		if (!photonView.IsMine)
 			Destroy(this);

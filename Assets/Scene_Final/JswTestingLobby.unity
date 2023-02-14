@@ -814,6 +814,7 @@ MonoBehaviour:
   inConnectPanel: {fileID: 1180791467}
   roomPanel: {fileID: 1634775344}
   lobbyPanel: {fileID: 531158373}
+  titleScreen: {fileID: 1464262133}
 --- !u!4 &433665979
 Transform:
   m_ObjectHideFlags: 0
@@ -2395,6 +2396,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d0f11fe9445feed498d336242ebed19d, type: 3}
+--- !u!1 &1464262133 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6474656091836944753, guid: d0f11fe9445feed498d336242ebed19d, type: 3}
+  m_PrefabInstance: {fileID: 1464262132}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1522950861
 PrefabInstance:
   m_ObjectHideFlags: 0
