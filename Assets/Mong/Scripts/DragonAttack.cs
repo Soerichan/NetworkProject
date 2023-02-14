@@ -6,7 +6,7 @@ using Photon.Pun;
 public class DragonAttack : MonoBehaviourPun
 {
     public GameObject[] attackPosition = new GameObject[4];
-    public GameObject[] TrainbPosition = new GameObject[2];
+    //public GameObject[] TrainbPosition = new GameObject[2];
     public Dragon m_dragon;
     public float dragonTime;
     public float m_fVelocity;

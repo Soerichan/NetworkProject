@@ -6,12 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/JSW/JswTestingLobby.unity
+    path: Assets/Scene_Final/JswTestingLobby.unity
     guid: 697dad70ecb07b04abf088de93267c97
   - enabled: 1
-    path: Assets/JakeFolder/TestScene/TestMapScene.unity
-    guid: 9a025a8eac4dc1c46a4cf4ebe215be3a
-  - enabled: 0
-    path: Assets/Scenes/JSW/JswGameScene.unity
-    guid: 12dbfad942ba41a48b714fd910102db5
+    path: Assets/Scene_Final/LavaScene.unity
+    guid: f91e17c6d4504f94f8925ad43258c7bf
+  - enabled: 1
+    path: Assets/Scene_Final/SubwayScene.unity
+    guid: dd298bded2b2c50458577e99143baaf6
+  - enabled: 1
+    path: Assets/Scene_Final/ResultSecne.unity
+    guid: 40ec7af79f867944ba7677579a1ca5f5
   m_configObjects: {}

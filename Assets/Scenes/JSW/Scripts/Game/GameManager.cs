@@ -116,8 +116,8 @@ namespace jsw
 			if (PhotonNetwork.LocalPlayer.GetPlayerNumber() % 2 == 0)
 			{
                 float angularStart = (360.0f / PhotonNetwork.CurrentRoom.PlayerCount) * (PhotonNetwork.LocalPlayer.GetPlayerNumber()*0.5f);
-                float x = 20.0f * Mathf.Sin(angularStart * Mathf.Deg2Rad);
-                float z = 20.0f * Mathf.Cos(angularStart * Mathf.Deg2Rad);
+                float x = 5.0f * Mathf.Sin(angularStart * Mathf.Deg2Rad);
+                float z = 5.0f * Mathf.Cos(angularStart * Mathf.Deg2Rad);
                 Vector3 position = new Vector3(x, 0.0f, z);
                 Quaternion rotation = Quaternion.Euler(0.0f, angularStart, 0.0f);
                 PhotonNetwork.Instantiate("PlayerY",TeamStartPosition[0].transform.position+ position, rotation, 0);
@@ -125,8 +125,8 @@ namespace jsw
 			else
 			{
                 float angularStart = (360.0f / PhotonNetwork.CurrentRoom.PlayerCount) * ((PhotonNetwork.LocalPlayer.GetPlayerNumber()-1)*0.5f);
-                float x = 20.0f * Mathf.Sin(angularStart * Mathf.Deg2Rad);
-                float z = 20.0f * Mathf.Cos(angularStart * Mathf.Deg2Rad);
+                float x = 5.0f * Mathf.Sin(angularStart * Mathf.Deg2Rad);
+                float z = 5.0f * Mathf.Cos(angularStart * Mathf.Deg2Rad);
                 Vector3 position = new Vector3(x, 0.0f, z);
                 Quaternion rotation = Quaternion.Euler(0.0f, angularStart, 0.0f);
                 PhotonNetwork.Instantiate("PlayerB", TeamStartPosition[1].transform.position+position, rotation, 0);
@@ -138,8 +138,8 @@ namespace jsw
 
 
 
-
-		}
+			
+        }
 
 		
 		private IEnumerator ReadyCoroutine()
@@ -154,8 +154,8 @@ namespace jsw
             if (PhotonNetwork.LocalPlayer.GetPlayerNumber() % 2 == 0)
             {
                 float angularStart = (360.0f / PhotonNetwork.CurrentRoom.PlayerCount) * (PhotonNetwork.LocalPlayer.GetPlayerNumber() * 0.5f);
-                float x = 20.0f * Mathf.Sin(angularStart * Mathf.Deg2Rad);
-                float z = 20.0f * Mathf.Cos(angularStart * Mathf.Deg2Rad);
+                float x = 5.0f * Mathf.Sin(angularStart * Mathf.Deg2Rad);
+                float z = 5.0f * Mathf.Cos(angularStart * Mathf.Deg2Rad);
                 Vector3 position = new Vector3(x, 0.0f, z);
                 Quaternion rotation = Quaternion.Euler(0.0f, angularStart, 0.0f);
                 PhotonNetwork.Instantiate("PlayerY", TeamStartPosition[0].transform.position + position, rotation, 0);
@@ -163,13 +163,13 @@ namespace jsw
             else
             {
                 float angularStart = (360.0f / PhotonNetwork.CurrentRoom.PlayerCount) * ((PhotonNetwork.LocalPlayer.GetPlayerNumber() - 1) * 0.5f);
-                float x = 20.0f * Mathf.Sin(angularStart * Mathf.Deg2Rad);
-                float z = 20.0f * Mathf.Cos(angularStart * Mathf.Deg2Rad);
+                float x = 5.0f * Mathf.Sin(angularStart * Mathf.Deg2Rad);
+                float z = 5.0f * Mathf.Cos(angularStart * Mathf.Deg2Rad);
                 Vector3 position = new Vector3(x, 0.0f, z);
                 Quaternion rotation = Quaternion.Euler(0.0f, angularStart, 0.0f);
                 PhotonNetwork.Instantiate("PlayerB", TeamStartPosition[1].transform.position + position, rotation, 0);
             }
-
+			
         }
 
 		private IEnumerator StartCountDown()

@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,50 +11,52 @@ namespace Mong
     {
         public GameObject[] winposition = new GameObject[4];
         public GameObject[] Loseposition = new GameObject[4];
-        public GameObject[] winCharacter = new GameObject[4];
-        public GameObject[] loseCharacter = new GameObject[4];
+        public GameObject[] Characters = new GameObject[8];
 
-    
+        public WinManager win;
+        
         public bool bluewin;
 
         private void Start()
         {
-
+            win=FindObjectOfType<WinManager>();
+            for (int i=0;i<PhotonNetwork.CurrentRoom.PlayerCount;i++) 
+            {
+                Characters[i].SetActive(true);
+            }
+            bluewin = win.teamWin;
             if (bluewin)
             {
-                Win();
-                Lose();
+                BlueWin();
+                
             }
             else
             {
-                Shuffle();
+                YellowWin();
             }
+            StartCoroutine(win.DestroyThis());
+            
         }
 
-        public void Win()
+        public void BlueWin()
         {
             for (int i = 0; i < 4; i++)
             {
-                winCharacter[i].transform.position = winposition[i].transform.position;
+                Characters[2*i].transform.position = winposition[i].transform.position;
+                Characters[2 * i + 1].transform.position = Loseposition[i].transform.position;
             }
         }
 
-        public void Lose()
+        public void YellowWin()
         {
             for (int i = 0; i < 4; i++)
             {
-                loseCharacter[i].transform.position = Loseposition[i].transform.position;
+                Characters[2 * i].transform.position = Loseposition[i].transform.position;
+                Characters[2*i+1].transform.position = winposition[i].transform.position;
             }
         }
 
-        public void Shuffle()
-        {
-            for (int i = 0; i < 4; i++)
-            {
-                winCharacter[i].transform.position = Loseposition[i].transform.position;
-                loseCharacter[i].transform.position = winposition[i].transform.position;
-            }
-        }
+       
 
 
 

@@ -56,6 +56,7 @@ public class PlayerController : MonoBehaviourPun
     [SerializeField]
     public float m_fDropkickPower;
 
+    public GameObject[] StartPos=new GameObject[2];
 
 
     [Header("Coroutine")]
@@ -90,6 +91,12 @@ public class PlayerController : MonoBehaviourPun
         m_respawnPosition   = GameObject.Find("RespawnPosition").transform;
         
         m_fTeamNumber       = PhotonNetwork.LocalPlayer.GetPlayerNumber() % 2 == 0 ? 0 : 1;
+        
+        StartPos            = new GameObject[2];
+        StartPos[0]         = GameObject.Find("YellowStartPos").GameObject();
+        StartPos[1]         = GameObject.Find("BlueStartPos").GameObject();
+        m_respawnPosition   = StartPos[(int)m_fTeamNumber].transform;
+
     }
     private void Update()
     {

@@ -5,15 +5,17 @@ using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class RoundManager : MonoBehaviourPun
 {
-    
+   
 
     public float m_fLimitTime;
     public TimerUI m_timer;
     
     public UIManager m_UIManager;
+    public WinManager m_WinManager;
 
     public PlayerCamera m_playerCamera;
 
@@ -65,7 +67,9 @@ public class RoundManager : MonoBehaviourPun
         {
             StopAllCoroutines();
             WinJudgment();
+            StartCoroutine(GoToResultScene());
         }
+        
     }
 
     public IEnumerator RoundCoroutine()
@@ -73,7 +77,12 @@ public class RoundManager : MonoBehaviourPun
         yield return new WaitForSeconds(m_fLimitTime);
         RoundEnd();
     }
+    public IEnumerator GoToResultScene()
+    {
+        yield return new WaitForSeconds(3.0f);
+        PhotonNetwork.LoadLevel(3);
 
+    }
     public IEnumerator TimeCoroutine()
     {
         while (true)
@@ -109,10 +118,12 @@ public class RoundManager : MonoBehaviourPun
     
     public void BlueWin()
     {
+        m_WinManager.teamWin = false;
         photonView.RPC("BlueWinUICall", RpcTarget.All);
     }
     public void YellowWin()
     {
+        m_WinManager.teamWin = true;
         photonView.RPC("YellowWinUICall", RpcTarget.All);
     }
     public void Draw()
