@@ -71,8 +71,7 @@ public class PlayerController : MonoBehaviourPun
 
     [Header("Manager")]
     public PoolManager      m_poolManager;
-    public SoundManager     m_soundManager;
-    public ParticleManager  m_particleManager;
+    public PoolGetter       m_poolGetter;
     public CubeManager      m_cubeManager;
 
 
@@ -156,9 +155,9 @@ public class PlayerController : MonoBehaviourPun
 
     public void Punch()
     {
-        m_soundManager.attackSound.Play();
-        m_particleManager.attackParticle.Play();
-      
+        m_poolGetter.PoolGet("AttackSound");
+        m_poolGetter.PoolGet("AttackParticle");
+
         if (photonView.IsMine != true)
             return;
 
@@ -209,8 +208,8 @@ public class PlayerController : MonoBehaviourPun
 
     public void Punched(Vector3 vec)
     {
-        m_soundManager.takeHitSound.Play();    
-        m_particleManager.takeHitParticle.Play();
+        m_poolGetter.PoolGet("TakeHitSound");
+        m_poolGetter.PoolGet("TakeHitParticle");
 
         if (photonView.IsMine != true)
             return;
@@ -225,8 +224,8 @@ public class PlayerController : MonoBehaviourPun
 
     public void Dropkick()
     {
-        m_soundManager.attackSound.Play();
-        m_particleManager.attackParticle.Play();
+        m_poolGetter.PoolGet("AttackSound");
+        m_poolGetter.PoolGet("AttackParticle");
 
         if (photonView.IsMine != true)
             return;
@@ -273,8 +272,8 @@ public class PlayerController : MonoBehaviourPun
 
     public void Dropkicked(Vector3 vec)
     {
-        m_soundManager.takeHitSound.Play();
-        m_particleManager.takeHitParticle.Play();
+        m_poolGetter.PoolGet("TakeHitSound");
+        m_poolGetter.PoolGet("TakeHitParticle");
 
         if (photonView.IsMine != true)
             return;
@@ -431,8 +430,8 @@ public class PlayerController : MonoBehaviourPun
         if (photonView.IsMine != true)
             return;
 
-        m_particleManager.fireParticle.Play();
-        m_soundManager.walkSound.Play();        
+        m_poolGetter.PoolGet("TakeHitSound");
+        m_poolGetter.PoolGet("FireParticle");
         m_state = State.Die;
         m_gFX.SetActive(false);
         m_masterGroundChecker.gameObject.SetActive(false);
