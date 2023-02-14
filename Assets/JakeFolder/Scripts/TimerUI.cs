@@ -5,7 +5,5 @@ using UnityEngine.UI;
 
 public class TimerUI : MonoBehaviour
 {
-    public Slider m_slider;
-  
-   
+    public Slider m_slider;  
 }

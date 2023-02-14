@@ -7,18 +7,12 @@ public class PunchButton : MonoBehaviour
 {
     
   
-   private PlayerController[] m_playerController;
-    private PlayerController m_player;
-
-    private void Start()
-    {
-        
-    }
+    private PlayerController[]   m_playerController;
+    private PlayerController     m_player;
 
     public void RoundStart()
     {
         m_playerController = FindObjectsOfType<PlayerController>();
-
 
         for (int i = 0; i < m_playerController.Length; i++)
         {
@@ -28,13 +22,9 @@ public class PunchButton : MonoBehaviour
             }
         }
     }
-
-   
+  
     public void ClickPunchButton()
     {
         m_player.Punch();
     }
-
-
-
 }

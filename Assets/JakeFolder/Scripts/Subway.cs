@@ -16,6 +16,4 @@ public class Subway : MonoBehaviourPun, IPunObservable
     {
        
     }
-
-
 }

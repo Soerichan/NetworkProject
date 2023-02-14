@@ -6,20 +6,23 @@ using TMPro;
 
 public class UIManager : MonoBehaviourPun
 {
-    public WinUI m_winUI;
-    public LoseUI m_loseUI;
-    public DrawUI m_drawUI;
+    [Header("ResultUI")]
+    public WinUI    m_winUI;
+    public LoseUI   m_loseUI;
+    public DrawUI   m_drawUI;
 
+    [Header("ScoreUI")]
     public ScoreUI m_scoreUI;
 
-    public Joystick m_joystick;
-    public PunchButton m_punchButton;
-    public DropKickButton m_dropKickButton;
+    [Header("ControlUI")]
+    public Joystick          m_joystick;
+    public PunchButton       m_punchButton;
+    public DropKickButton    m_dropKickButton;
 
-    public GameObject m_loadingUI;
-    public GameObject m_startTextUI;
-    //public GameObject m_hurryTextUI;
-    public TextMeshProUGUI m_countdown;
+    [Header("SupportUI")]
+    public GameObject        m_loadingUI;
+    public GameObject        m_startTextUI;
+    public TextMeshProUGUI   m_countdown;
 
 
 
