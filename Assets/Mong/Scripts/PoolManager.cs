@@ -63,6 +63,22 @@ namespace ObjectPool
 
         }
 
+        public GameObject NameGet(string name)
+        {
+            Stack<GameObject> stack = poolDic[name];
+            if (stack.Count > 0)
+            {
+                GameObject instance = stack.Pop();
+                instance.gameObject.SetActive(true);
+                instance.transform.parent = null;
+                return instance;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public void Release(GameObject instance)
         {
             Stack<GameObject> stack = poolDic[instance.name];
