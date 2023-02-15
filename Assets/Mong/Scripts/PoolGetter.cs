@@ -1,7 +1,6 @@
 using ObjectPool;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.EditorTools;
 using UnityEngine;
 
 public class PoolGetter : MonoBehaviour
@@ -11,25 +10,25 @@ public class PoolGetter : MonoBehaviour
 
     string Key;
 
-    public Dictionary<string, GameObject> GetDic = new Dictionary<string, GameObject>();
+    //public Dictionary<string, GameObject> GetDic = new Dictionary<string, GameObject>();
 
     public PoolManager poolManager;
 
     public SoundManager soundManager;
     // Update is called once per frame
-    private void PoolAdd()
-    {
-        Key = "공격사운드";
-        GetDic.Add(Key, poolManager.Get(prefabs[0]));
-        Key = "피격사운드";
-        GetDic.Add(Key, poolManager.Get(prefabs[1]));
-        Key = "걸음사운드";
-        GetDic.Add(Key, poolManager.Get(prefabs[2]));
-        Key = "공격파티클";
-        GetDic.Add(Key, poolManager.Get(prefabs[3]));
-        Key = "피격파티클";
-        GetDic.Add(Key, poolManager.Get(prefabs[4]));
-    }
+    //private void PoolAdd()
+    //{
+    //    Key = "공격사운드";
+    //    GetDic.Add(Key, poolManager.Get(prefabs[0]));
+    //    Key = "피격사운드";
+    //    GetDic.Add(Key, poolManager.Get(prefabs[1]));
+    //    Key = "걸음사운드";
+    //    GetDic.Add(Key, poolManager.Get(prefabs[2]));
+    //    Key = "공격파티클";
+    //    GetDic.Add(Key, poolManager.Get(prefabs[3]));
+    //    Key = "피격파티클";
+    //    GetDic.Add(Key, poolManager.Get(prefabs[4]));
+    //}
     public void PoolGet(string get)
     {
         Key = get;
@@ -37,7 +36,7 @@ public class PoolGetter : MonoBehaviour
     }
     private void Start()
     {
-        PoolAdd();
+        //PoolAdd();
         soundManager = FindObjectOfType<SoundManager>();
     }
 
