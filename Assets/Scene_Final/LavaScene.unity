@@ -3908,7 +3908,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3570a8931d8a9b045b58939323d5c3f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fLimitTime: 300
+  m_fLimitTime: 20
   m_timer: {fileID: 1934094724}
   m_UIManager: {fileID: 1145159913}
   m_WinManager: {fileID: 1649763302}

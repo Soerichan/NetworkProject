@@ -1669,16 +1669,28 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4274886374314170960, guid: d04d235bb73a8784c918f03af16b72a1, type: 3}
   m_PrefabInstance: {fileID: 859849454}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &859849456 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6955990902646787138, guid: d04d235bb73a8784c918f03af16b72a1, type: 3}
+--- !u!114 &859849456 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 115924614908479442, guid: d04d235bb73a8784c918f03af16b72a1, type: 3}
   m_PrefabInstance: {fileID: 859849454}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &859849457 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6955990902777496265, guid: d04d235bb73a8784c918f03af16b72a1, type: 3}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3959d582c0f1c334fb72bdbd17b28e30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &859849457 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1884512557370828030, guid: d04d235bb73a8784c918f03af16b72a1, type: 3}
   m_PrefabInstance: {fileID: 859849454}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3959d582c0f1c334fb72bdbd17b28e30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &859849458 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3309109326483358812, guid: d04d235bb73a8784c918f03af16b72a1, type: 3}
@@ -1891,7 +1903,7 @@ MonoBehaviour:
   - {fileID: 859849461}
   train: {fileID: 859849456}
   dragonTime: 5
-  m_fVelocity: 0
+  m_fVelocity: 2
 --- !u!114 &906815369
 MonoBehaviour:
   m_ObjectHideFlags: 0
