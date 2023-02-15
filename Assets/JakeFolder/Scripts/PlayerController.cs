@@ -87,6 +87,7 @@ public class PlayerController : MonoBehaviourPun
     {
         m_cubeManager       = GameObject.Find("Map").GetComponent<CubeManager>();
         m_poolManager       = GameObject.Find("PoolManager").GetComponent<PoolManager>();
+        m_poolGetter        = GameObject.Find("PoolTester").GetComponent<PoolGetter>();
         m_respawnPosition   = GameObject.Find("RespawnPosition").transform;
         
         m_fTeamNumber       = PhotonNetwork.LocalPlayer.GetPlayerNumber() % 2 == 0 ? 0 : 1;

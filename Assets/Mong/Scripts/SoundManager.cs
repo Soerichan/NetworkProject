@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SoundManager : MonoBehaviour
 {
@@ -18,9 +19,17 @@ public class SoundManager : MonoBehaviour
 
     private void Start()
     {
-        dragon.clip     = dragonSound;
-        uptrain.clip    = trainSound;
-        downtrain.clip  = trainSound;
+        if (SceneManager.GetActiveScene().buildIndex == 1)
+            dragon.clip = dragonSound;
+        else if(SceneManager.GetActiveScene().buildIndex == 2)
+        {
+            uptrain.clip = trainSound;
+            downtrain.clip = trainSound;
+        }
+        else
+        {
+
+        }
     }
 
 }
