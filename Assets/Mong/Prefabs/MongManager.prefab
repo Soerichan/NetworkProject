@@ -147,7 +147,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackSound: {fileID: 8751559999407593856}
   takeHitSound: {fileID: 8751559999736653341}
-  walkSound: {fileID: 8751560000405546326}
+  paintSound: {fileID: 8751560000405546326}
   dragon: {fileID: 0}
   uptrain: {fileID: 0}
   downtrain: {fileID: 0}
@@ -783,6 +783,7 @@ MonoBehaviour:
   - {fileID: 8751559998968001915}
   - {fileID: 1784903665945963058}
   poolManager: {fileID: 8751559999669802399}
+  soundManager: {fileID: 0}
 --- !u!1 &8751560000191866666
 GameObject:
   m_ObjectHideFlags: 0
@@ -860,7 +861,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -3430352884674308054, guid: 016c08482cd54a54e9f18d182c34cd9c, type: 2}
-  m_audioClip: {fileID: 8300000, guid: 9e06ea7342f2cb1488f8fe30f284167d, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 923643e17c03f0f4fae969122e58ab07, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -1086,6 +1087,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FireParticle
       objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: 1c20c7996d683754db1f0f62a361952c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: 1c20c7996d683754db1f0f62a361952c, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -1130,6 +1135,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 19800002, guid: 1c20c7996d683754db1f0f62a361952c, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 19900000, guid: 1c20c7996d683754db1f0f62a361952c, type: 3}
       propertyPath: m_Materials.Array.size
       value: 1
@@ -1150,6 +1159,20 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 100004, guid: 1c20c7996d683754db1f0f62a361952c, type: 3}
   m_PrefabInstance: {fileID: 1784903665946061974}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3814315657730652543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1784903665945963058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a211c8e34d116d044898473ff8f39d64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  returnTime: 1
+  poolManager: {fileID: 8751559999669802399}
 --- !u!4 &1784903665946457618 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400004, guid: 1c20c7996d683754db1f0f62a361952c, type: 3}
@@ -1165,6 +1188,10 @@ PrefabInstance:
     - target: {fileID: 100004, guid: f95ff734540a0d749be6571b6cb5b37f, type: 3}
       propertyPath: m_Name
       value: TakeHitParticle
+      objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: f95ff734540a0d749be6571b6cb5b37f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: f95ff734540a0d749be6571b6cb5b37f, type: 3}
       propertyPath: m_RootOrder
@@ -1291,6 +1318,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: f06e78284f831ae469c74624ab5d513b, type: 3}
       propertyPath: m_Name
       value: AttackParticle
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: f06e78284f831ae469c74624ab5d513b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: f06e78284f831ae469c74624ab5d513b, type: 3}
       propertyPath: m_RootOrder

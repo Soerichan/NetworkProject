@@ -106,7 +106,7 @@ namespace jsw
             PhotonNetwork.CurrentRoom.IsVisible = false;
 
             int rand = Random.Range(1, 3);
-            PhotonNetwork.LoadLevel(rand);
+            PhotonNetwork.LoadLevel(2);
         }
         public void OnShuffleButtonClicked()
         {
