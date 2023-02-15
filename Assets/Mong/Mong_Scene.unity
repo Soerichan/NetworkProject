@@ -256,7 +256,6 @@ MonoBehaviour:
   - {fileID: 734113275}
   - {fileID: 396213627}
   - {fileID: 2034374583}
-  TrainbPosition: []
   m_dragon: {fileID: 1616606003}
   dragonTime: 5
   m_fVelocity: 50
@@ -304,7 +303,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2606251088160740075, guid: b77418310a9ba9b448b7bb726c460d51, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2606251088160740075, guid: b77418310a9ba9b448b7bb726c460d51, type: 3}
       propertyPath: m_LocalPosition.x
@@ -503,7 +502,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1717282728671086988, guid: 357ad75424c7a3a499cbad137498af0d, type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 1717282728671086988, guid: 357ad75424c7a3a499cbad137498af0d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -728,7 +727,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7078460021788581868, guid: 18d97b034e43607489cc9a6936c7ab6c, type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7078460021788581868, guid: 18d97b034e43607489cc9a6936c7ab6c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1129,7 +1128,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1397004119
 GameObject:
@@ -1181,7 +1180,7 @@ MonoBehaviour:
   - {fileID: 807086710}
   train: {fileID: 1576937764}
   dragonTime: 5
-  speed: 50
+  m_fVelocity: 0
 --- !u!114 &1397004123
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1199,7 +1198,7 @@ MonoBehaviour:
   - {fileID: 1975607443}
   train: {fileID: 844147370}
   dragonTime: 5
-  speed: 50
+  m_fVelocity: 0
 --- !u!1 &1522140702
 GameObject:
   m_ObjectHideFlags: 0
@@ -1396,7 +1395,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1673954461 stripped
 GameObject:
@@ -1528,7 +1527,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1776488576 stripped
 GameObject:
@@ -1866,7 +1865,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 50
+  far clip plane: 200
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -1893,7 +1892,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1929547864}
   m_LocalRotation: {x: 0.21803978, y: -0, z: -0, w: 0.9759399}
-  m_LocalPosition: {x: 26.1, y: 10.5, z: -2.9}
+  m_LocalPosition: {x: 22.7, y: 32.1, z: -30.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

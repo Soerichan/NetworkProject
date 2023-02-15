@@ -613,6 +613,7 @@ GameObject:
   - component: {fileID: 4921801920367652506}
   - component: {fileID: 4921801920367652508}
   - component: {fileID: 416336469075586205}
+  - component: {fileID: 6203396014859163830}
   m_Layer: 7
   m_Name: PlayerB
   m_TagString: Untagged
@@ -714,9 +715,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_player: {fileID: 0}
-  m_cubeManager: {fileID: 0}
   m_gFX: {fileID: 4921801922016046573}
   m_respawnPosition: {fileID: 0}
+  m_fTeamNumber: 1
+  m_masterGroundChecker: {fileID: 2566214459765062185}
   m_fPuchTime: 0.47
   m_fDropkickTime: 0.75
   m_fDizzyTime: 1
@@ -730,8 +732,9 @@ MonoBehaviour:
   m_fDropkickAngle: 30
   m_fDropkickPower: 2
   StartPos: []
-  m_fTeamNumber: 1
-  m_masterGroundChecker: {fileID: 2566214459765062185}
+  m_poolManager: {fileID: 0}
+  m_poolGetter: {fileID: 0}
+  m_cubeManager: {fileID: 0}
 --- !u!114 &4921801920367652506
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -794,6 +797,23 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &6203396014859163830
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4921801920367652505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80cafeb6a1bee5b48812697238e99f5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movePower: 0
+  rotateSpeed: 0
+  maxSpeed: 0
+  tmpName: {fileID: 0}
+  bulletCount: 0
 --- !u!1 &4921801920403384448
 GameObject:
   m_ObjectHideFlags: 0
