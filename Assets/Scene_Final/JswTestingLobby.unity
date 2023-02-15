@@ -2386,6 +2386,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3171628700210305097, guid: d0f11fe9445feed498d336242ebed19d, type: 3}
+      propertyPath: m_text
+      value: Touch  to  Start!
+      objectReference: {fileID: 0}
+    - target: {fileID: 3171628700210305097, guid: d0f11fe9445feed498d336242ebed19d, type: 3}
+      propertyPath: m_fontSize
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 3171628700210305097, guid: d0f11fe9445feed498d336242ebed19d, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 125cb55b44b24c4393181402bc6200e6, type: 2}
+    - target: {fileID: 3171628700210305097, guid: d0f11fe9445feed498d336242ebed19d, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 3171628700210305097, guid: d0f11fe9445feed498d336242ebed19d, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 125cb55b44b24c4393181402bc6200e6, type: 2}
+    - target: {fileID: 3688423497809951099, guid: d0f11fe9445feed498d336242ebed19d, type: 3}
+      propertyPath: m_UiScaleMode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6474656091836944753, guid: d0f11fe9445feed498d336242ebed19d, type: 3}
       propertyPath: m_Name
       value: TitleScene

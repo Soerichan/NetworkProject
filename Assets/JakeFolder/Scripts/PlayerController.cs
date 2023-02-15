@@ -57,6 +57,7 @@ public class PlayerController : MonoBehaviourPun
     public float m_fDropkickPower;
 
     public GameObject[] StartPos=new GameObject[2];
+    
 
 
     [Header("Coroutine")]
@@ -81,6 +82,11 @@ public class PlayerController : MonoBehaviourPun
         m_player            = GetComponent<Player>();
         m_playerAnimator    = GetComponent<PlayerAnimator>();
         m_maskPlayer        = LayerMask.NameToLayer("Player");
+
+        m_fTeamNumber = PhotonNetwork.LocalPlayer.GetPlayerNumber() % 2 == 0 ? 0 : 1;
+
+
+       
     }
 
     private void Start()
@@ -450,4 +456,6 @@ public class PlayerController : MonoBehaviourPun
         m_state = State.Idle;
         StopCoroutine(m_respawnCoroutine);
     }
+
+
 }

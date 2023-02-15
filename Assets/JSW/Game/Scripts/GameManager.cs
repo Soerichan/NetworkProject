@@ -120,7 +120,7 @@ namespace jsw
                 float z = 5.0f * Mathf.Cos(angularStart * Mathf.Deg2Rad);
                 Vector3 position = new Vector3(x, 0.0f, z);
                 Quaternion rotation = Quaternion.Euler(0.0f, angularStart, 0.0f);
-                PhotonNetwork.Instantiate("PlayerPrefab",TeamStartPosition[0].transform.position+ position, rotation, 0);
+                PhotonNetwork.Instantiate("PlayerPrefab01",TeamStartPosition[0].transform.position+ position, rotation, 0);
 			}
 			else
 			{
@@ -129,7 +129,7 @@ namespace jsw
                 float z = 5.0f * Mathf.Cos(angularStart * Mathf.Deg2Rad);
                 Vector3 position = new Vector3(x, 0.0f, z);
                 Quaternion rotation = Quaternion.Euler(0.0f, angularStart, 0.0f);
-                PhotonNetwork.Instantiate("PlayerPrefab", TeamStartPosition[1].transform.position+position, rotation, 0);
+                PhotonNetwork.Instantiate("PlayerPrefab02", TeamStartPosition[1].transform.position+position, rotation, 0);
 			}
 
 

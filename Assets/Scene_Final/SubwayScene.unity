@@ -1428,9 +1428,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: MongManager
       objectReference: {fileID: 0}
+    - target: {fileID: 8751559998988415472, guid: b77418310a9ba9b448b7bb726c460d51, type: 3}
+      propertyPath: uptrain
+      value: 
+      objectReference: {fileID: 859849457}
+    - target: {fileID: 8751559998988415472, guid: b77418310a9ba9b448b7bb726c460d51, type: 3}
+      propertyPath: downtrain
+      value: 
+      objectReference: {fileID: 859849456}
     - target: {fileID: 8751560000174952748, guid: b77418310a9ba9b448b7bb726c460d51, type: 3}
       propertyPath: m_Name
-      value: PoolGetter
+      value: PoolTester
       objectReference: {fileID: 0}
     - target: {fileID: 8751560000174952751, guid: b77418310a9ba9b448b7bb726c460d51, type: 3}
       propertyPath: soundManager
@@ -2190,6 +2198,16 @@ PrefabInstance:
 --- !u!1 &859849455 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4274886374314170960, guid: d04d235bb73a8784c918f03af16b72a1, type: 3}
+  m_PrefabInstance: {fileID: 859849454}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &859849456 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 6215167021477096495, guid: d04d235bb73a8784c918f03af16b72a1, type: 3}
+  m_PrefabInstance: {fileID: 859849454}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &859849457 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 3263763586621370341, guid: d04d235bb73a8784c918f03af16b72a1, type: 3}
   m_PrefabInstance: {fileID: 859849454}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &859849458 stripped
@@ -4373,7 +4391,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 15
+  m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1727153162
 GameObject:
