@@ -61,7 +61,7 @@ public class UIManager : MonoBehaviourPun
         m_startTextUI.gameObject.SetActive(true);
         yield return new WaitForSeconds(1f);
         m_startTextUI.gameObject.SetActive(false);
-        yield return new WaitForSeconds(285f);
+        yield return new WaitForSeconds(165f);
         StartCoroutine(Countdown());
     }
 
@@ -71,7 +71,7 @@ public class UIManager : MonoBehaviourPun
         m_countdown.gameObject.SetActive(true);
         m_countdown.text = count.ToString();
 
-        while (true)
+        while (count>0)
         {
             yield return new WaitForSeconds(1f);
             count--;

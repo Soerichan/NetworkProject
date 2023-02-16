@@ -25,7 +25,8 @@ namespace Mong
             {
                 Characters[i].SetActive(true);
             }
-            bluewin = win.teamWin;
+            bluewin = !win.teamWin;
+
             if (bluewin)
             {
                 BlueWin();

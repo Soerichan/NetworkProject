@@ -12,29 +12,26 @@ public class PlayerVs : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         winPosition = FindObjectOfType<WinPosition>();
-    }
 
-
-    private void Update()
-    {
         if (winPosition.bluewin)
         {
             animator.SetBool("BlueWin", true);
-            animator.SetBool("YellowLose", true);
-            animator.SetBool("BlueLose", false);
-            animator.SetBool("YellowWin", false);
+            
+
 
         }
         else
         {
-            animator.SetBool("BlueWin", false);
-            animator.SetBool("YellowLose", false);
 
-            animator.SetBool("BlueLose", true);
-            animator.SetBool("YellowWin", true);
+
+            animator.SetBool("BlueWin", false);
+            
 
         }
-    }       
+    }
+
+
+    
 
 
 }

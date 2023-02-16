@@ -427,11 +427,22 @@ public class PlayerController : MonoBehaviourPun
         
         m_state = State.Die;
         m_gFX.SetActive(false);
+        photonView.RPC("DieRPC", RpcTarget.All);
         m_masterGroundChecker.gameObject.SetActive(false);
         m_respawnCoroutine=StartCoroutine(RespawnCoroutine());
     }
 
-  
+    [PunRPC]
+    public void DieRPC()
+    {
+        m_gFX.SetActive(false);
+    }
+
+    [PunRPC]
+    public void RespawnRPC()
+    {
+        m_gFX.SetActive(true);
+    }
 
     public IEnumerator RespawnCoroutine()
     {
@@ -440,6 +451,7 @@ public class PlayerController : MonoBehaviourPun
         m_gFX.SetActive(true);
         transform.position = m_respawnPosition.position;
         m_state = State.Idle;
+        photonView.RPC("RespawnRPC", RpcTarget.All);
         StopCoroutine(m_respawnCoroutine);
     }
 
@@ -456,7 +468,7 @@ public class PlayerController : MonoBehaviourPun
         if (str == "Attack")
         {
             m_poolGetter.PoolGet("AttackSound",vec);
-            m_poolGetter.PoolGet("AttackParticle",vec + Vector3.up * 1.5f);
+            m_poolGetter.PoolGet("AttackParticle",vec + (Vector3.up * 1.5f)+(transform.forward*1.5f));
         }
         else if(str=="TakeHit")
         {
