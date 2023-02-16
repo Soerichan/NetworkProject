@@ -15,6 +15,6 @@ EditorBuildSettings:
     path: Assets/Scene_Final/SubwayScene.unity
     guid: dd298bded2b2c50458577e99143baaf6
   - enabled: 1
-    path: Assets/Scene_Final/ResultSecne.unity
-    guid: 40ec7af79f867944ba7677579a1ca5f5
+    path: Assets/Mong/WinScene.unity
+    guid: 71138f70bd699074cb56fca64fbdf364
   m_configObjects: {}

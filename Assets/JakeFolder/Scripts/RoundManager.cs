@@ -102,14 +102,17 @@ public class RoundManager : MonoBehaviourPun
         {
             if (m_UIManager.m_scoreUI.m_fBlueScore > m_UIManager.m_scoreUI.m_fYellowScore)
             {
+                Debug.Log(string.Format("BlueScore:{0},YellowScore:{1}", m_UIManager.m_scoreUI.m_fBlueScore, m_UIManager.m_scoreUI.m_fYellowScore));
                 BlueWin();
             }
-            else if (m_UIManager.m_scoreUI.m_fBlueScore > m_UIManager.m_scoreUI.m_fYellowScore)
+            else if (m_UIManager.m_scoreUI.m_fBlueScore < m_UIManager.m_scoreUI.m_fYellowScore)
             {
+                Debug.Log(string.Format("BlueScore:{0},YellowScore:{1}", m_UIManager.m_scoreUI.m_fBlueScore, m_UIManager.m_scoreUI.m_fYellowScore));
                 YellowWin();
             }
             else
             {
+                Debug.Log(string.Format("BlueScore:{0},YellowScore:{1}", m_UIManager.m_scoreUI.m_fBlueScore, m_UIManager.m_scoreUI.m_fYellowScore));
                 Draw();
             }
         }
@@ -118,12 +121,13 @@ public class RoundManager : MonoBehaviourPun
     
     public void BlueWin()
     {
-        m_WinManager.teamWin = false;
+
+        photonView.RPC("BlueWinToWinManager", RpcTarget.All);
         photonView.RPC("BlueWinUICall", RpcTarget.All);
     }
     public void YellowWin()
     {
-        m_WinManager.teamWin = true;
+        photonView.RPC("YellowWinToWinManager", RpcTarget.All);
         photonView.RPC("YellowWinUICall", RpcTarget.All);
     }
     public void Draw()
@@ -164,5 +168,17 @@ public class RoundManager : MonoBehaviourPun
     public void DrawUICall()
     {
         m_UIManager.Draw();
+    }
+
+    [PunRPC]
+    public void BlueWinToWinManager()
+    {
+        m_WinManager.teamWin = false;
+    }
+
+    [PunRPC]
+    public void YellowWinToWinManager()
+    {
+        m_WinManager.teamWin = true;
     }
 }

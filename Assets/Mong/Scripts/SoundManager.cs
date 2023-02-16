@@ -19,8 +19,11 @@ public class SoundManager : MonoBehaviour
 
     private void Start()
     {
+
         if (SceneManager.GetActiveScene().buildIndex == 1)
-            dragon.clip = dragonSound;
+        { 
+        dragon.clip = dragonSound;
+        }
         else if(SceneManager.GetActiveScene().buildIndex == 2)
         {
             uptrain.clip = trainSound;

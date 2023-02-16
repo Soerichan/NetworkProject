@@ -20,11 +20,13 @@ namespace Mong
         private void Start()
         {
             win=FindObjectOfType<WinManager>();
+                Debug.Log(PhotonNetwork.CurrentRoom.PlayerCount);
             for (int i=0;i<PhotonNetwork.CurrentRoom.PlayerCount;i++) 
             {
                 Characters[i].SetActive(true);
             }
-            bluewin = win.teamWin;
+            bluewin = !win.teamWin;
+
             if (bluewin)
             {
                 BlueWin();
@@ -42,8 +44,8 @@ namespace Mong
         {
             for (int i = 0; i < 4; i++)
             {
-                Characters[2*i].transform.position = winposition[i].transform.position;
-                Characters[2 * i + 1].transform.position = Loseposition[i].transform.position;
+                Characters[2 * i].transform.position = Loseposition[i].transform.position;
+                Characters[2 * i + 1].transform.position = winposition[i].transform.position;
             }
         }
 
@@ -51,8 +53,9 @@ namespace Mong
         {
             for (int i = 0; i < 4; i++)
             {
-                Characters[2 * i].transform.position = Loseposition[i].transform.position;
-                Characters[2*i+1].transform.position = winposition[i].transform.position;
+                
+                Characters[2 * i].transform.position = winposition[i].transform.position;
+                Characters[2 * i + 1].transform.position = Loseposition[i].transform.position;
             }
         }
 
