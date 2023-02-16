@@ -63,13 +63,14 @@ namespace ObjectPool
 
         }
 
-        public GameObject NameGet(string name)
+        public GameObject NameGet(string name,Vector3 vec)
         {
             Stack<GameObject> stack = poolDic[name];
             if (stack.Count > 0)
             {
                 GameObject instance = stack.Pop();
                 instance.gameObject.SetActive(true);
+                instance.transform.position = vec;
                 instance.transform.parent = null;
                 return instance;
             }

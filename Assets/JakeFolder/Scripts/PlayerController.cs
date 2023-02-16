@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviourPun
     State                    m_state = State.Idle;
     public  float            m_fTeamNumber;
     private PlayerController m_playerOpponent;
+    [SerializeField]
     private LayerMask        m_maskPlayer;
     public  Jake.MasterGroundChecker m_masterGroundChecker;
     
@@ -80,24 +81,17 @@ public class PlayerController : MonoBehaviourPun
     private void Awake()
     {
         m_player            = GetComponent<Player>();
-        m_playerAnimator    = GetComponent<PlayerAnimator>();
-        m_maskPlayer        = LayerMask.NameToLayer("Player");
-
-        m_fTeamNumber = PhotonNetwork.LocalPlayer.GetPlayerNumber() % 2 == 0 ? 0 : 1;
-
-
-       
+        m_playerAnimator    = GetComponent<PlayerAnimator>();     
     }
 
     private void Start()
     {
+        TeamNumbering();
+
         m_cubeManager       = GameObject.Find("Map").GetComponent<CubeManager>();
         m_poolManager       = GameObject.Find("PoolManager").GetComponent<PoolManager>();
         m_poolGetter        = GameObject.Find("PoolTester").GetComponent<PoolGetter>();
-        m_respawnPosition   = GameObject.Find("RespawnPosition").transform;
-        
-        m_fTeamNumber       = PhotonNetwork.LocalPlayer.GetPlayerNumber() % 2 == 0 ? 0 : 1;
-        
+        m_respawnPosition   = GameObject.Find("RespawnPosition").transform;    
         StartPos            = new GameObject[2];
         StartPos[0]         = GameObject.Find("YellowStartPos").GameObject();
         StartPos[1]         = GameObject.Find("BlueStartPos").GameObject();
@@ -162,68 +156,64 @@ public class PlayerController : MonoBehaviourPun
 
     public void Punch()
     {
-        m_poolGetter.PoolGet("AttackSound");
-        m_poolGetter.PoolGet("AttackParticle");
+        photonView.RPC("PunchSoundRPC", RpcTarget.All, "Attack",transform.position);
+      
+
 
         if (photonView.IsMine != true)
             return;
 
+        
         m_playerAnimator.Punch();
         m_state = State.Punch;
         m_coroutinePunch = StartCoroutine(PunchToIdle());
           
         photonView.RPC("PunchJudgment", RpcTarget.MasterClient, transform.position, transform.forward,m_fTeamNumber);
-            
-
-            
-
-
     }
 
     [PunRPC]
     public void PunchJudgment(Vector3 vec,Vector3 forward , float team)
     {
-        if (PhotonNetwork.IsMasterClient)
+        if (!PhotonNetwork.IsMasterClient)
+            return;
+
+        // 1. 범위내에 있는가
+        Collider[] colliders = Physics.OverlapSphere(vec, m_fPunchRange, m_maskPlayer);
+
+        Debug.Log(string.Format("Collider.Length = {0}", colliders.Length));
+        if (colliders.Length == 0)
+            return;
+
+        for (int i = 0; i < colliders.Length; i++)
         {
-            // 1. 범위내에 있는가
-            Collider[] colliders = Physics.OverlapSphere(vec, m_fPunchRange, m_maskPlayer);
-            if (colliders.Length==0)
+            m_playerOpponent = colliders[i].GetComponent<PlayerController>();
+            Debug.Log(string.Format("Overlap with {0}", colliders[i].gameObject.name));
+
+            if (m_playerOpponent.m_fTeamNumber != team)
             {
-                return;
+                Vector3 dirToTarget = (m_playerOpponent.transform.position - vec).normalized;
+
+                // 2. 각도내에 있는가
+                if (Vector3.Dot(forward, dirToTarget) > Mathf.Cos(m_fPunchAngle * 0.5f * Mathf.Deg2Rad))
+                {
+                    m_playerOpponent.photonView.RPC("Punched", RpcTarget.All, dirToTarget);
+                }
+
+                break;
             }
-
-                for (int i = 0; i < colliders.Length; i++)
-                 {
-               
-                m_playerOpponent = colliders[i].GetComponent<PlayerController>();
-
-                     if (m_playerOpponent.m_fTeamNumber != team)
-                         break;
-                     
-                 }
-
-            Vector3 dirToTarget = (m_playerOpponent.transform.position - vec).normalized;
-
-            // 2. 각도내에 있는가
-            if (Vector3.Dot(forward, dirToTarget) > Mathf.Cos(m_fPunchAngle * 0.5f * Mathf.Deg2Rad))
-            {
-                m_playerOpponent.Punched(dirToTarget);
-            }
-        }    
+        }
     }
 
-
+    [PunRPC]
     public void Punched(Vector3 vec)
     {
-        m_poolGetter.PoolGet("TakeHitSound");
-        m_poolGetter.PoolGet("TakeHitParticle");
 
-        if (photonView.IsMine != true)
-            return;
+        photonView.RPC("PunchSoundRPC", RpcTarget.All, "TakeHit", transform.position);
 
         Dizzy();
         m_player.Hurt();
         m_player.m_rigidbody.AddForce(vec*m_fPunchPower, ForceMode.Impulse);
+       
     }
 
 
@@ -231,9 +221,8 @@ public class PlayerController : MonoBehaviourPun
 
     public void Dropkick()
     {
-        m_poolGetter.PoolGet("AttackSound");
-        m_poolGetter.PoolGet("AttackParticle");
 
+        photonView.RPC("PunchSoundRPC", RpcTarget.All, "Attack", transform.position);
         if (photonView.IsMine != true)
             return;
 
@@ -247,47 +236,43 @@ public class PlayerController : MonoBehaviourPun
     [PunRPC]
     public void DropkickJubgment(Vector3 vec, Vector3 forward, float team)
     {
-        if (PhotonNetwork.IsMasterClient)
+        if (!PhotonNetwork.IsMasterClient)
+            return;
+
+        // 1. 범위내에 있는가
+        Collider[] colliders = Physics.OverlapSphere(vec, m_fDropkickRange, m_maskPlayer);
+
+        Debug.Log(string.Format("Collider.Length = {0}", colliders.Length));
+        if (colliders.Length == 0)
+            return;
+
+        for (int i = 0; i < colliders.Length; i++)
         {
-            // 1. 범위내에 있는가
-            Collider[] colliders = Physics.OverlapSphere(vec, m_fDropkickRange, m_maskPlayer);
-            if (colliders.Length == 0)
+            m_playerOpponent = colliders[i].GetComponent<PlayerController>();
+            Debug.Log(string.Format("Overlap with {0}", colliders[i].gameObject.name));
+
+            if (m_playerOpponent.m_fTeamNumber != team)
             {
-                return;
-            }
+                Vector3 dirToTarget = (m_playerOpponent.transform.position - vec).normalized;
 
-            for (int i = 0; i < colliders.Length; i++)
-            {
-
-                m_playerOpponent = colliders[i].GetComponent<PlayerController>();
-
-                if (m_playerOpponent.m_fTeamNumber != team)
+                // 2. 각도내에 있는가
+                if (Vector3.Dot(forward, dirToTarget) > Mathf.Cos(m_fDropkickAngle * 0.5f * Mathf.Deg2Rad))
                 {
-
-                    break;
+                    m_playerOpponent.photonView.RPC("Dropkicked", RpcTarget.All, dirToTarget);
                 }
-            }
 
-            // 2. 각도내에 있는가
-            Vector3 dirToTarget = (m_playerOpponent.transform.position - vec).normalized;
-            if (Vector3.Dot(forward, dirToTarget) > Mathf.Cos(m_fDropkickAngle * 0.5f * Mathf.Deg2Rad))
-            {
-                m_playerOpponent.Dropkicked(dirToTarget);                
+                break;
             }
         }
     }
 
+    [PunRPC]
     public void Dropkicked(Vector3 vec)
     {
-        m_poolGetter.PoolGet("TakeHitSound");
-        m_poolGetter.PoolGet("TakeHitParticle");
+        photonView.RPC("PunchSoundRPC", RpcTarget.All, "TakeHit", transform.position);
 
-        if (photonView.IsMine != true)
-            return;
-
-        Down();
+        Die();
         m_player.Hurt();
-        transform.forward = -vec;
         m_player.m_rigidbody.AddForce(vec * m_fDropkickPower, ForceMode.Impulse);
     }
 
@@ -434,11 +419,12 @@ public class PlayerController : MonoBehaviourPun
 
     public void Die()
     {
+        photonView.RPC("PunchSoundRPC", RpcTarget.All, "Hot", transform.position);
+
         if (photonView.IsMine != true)
             return;
 
-        m_poolGetter.PoolGet("TakeHitSound");
-        m_poolGetter.PoolGet("FireParticle");
+        
         m_state = State.Die;
         m_gFX.SetActive(false);
         m_masterGroundChecker.gameObject.SetActive(false);
@@ -457,5 +443,31 @@ public class PlayerController : MonoBehaviourPun
         StopCoroutine(m_respawnCoroutine);
     }
 
+    private void TeamNumbering()
+    {
+        // m_fTeamNumber = PhotonNetwork.LocalPlayer.GetPlayerNumber() % 2;
+
+        m_fTeamNumber = photonView.Owner.GetPlayerNumber() % 2;
+    }
+
+    [PunRPC]
+    private void PunchSoundRPC(string str,Vector3 vec)
+    {
+        if (str == "Attack")
+        {
+            m_poolGetter.PoolGet("AttackSound",vec);
+            m_poolGetter.PoolGet("AttackParticle",vec + Vector3.up * 1.5f);
+        }
+        else if(str=="TakeHit")
+        {
+            m_poolGetter.PoolGet("TakeHitSound", vec);
+            m_poolGetter.PoolGet("TakeHitParticle", vec + Vector3.up * 1.5f);
+        }
+        else if(str=="Hot")
+        {
+            m_poolGetter.PoolGet("TakeHitSound",vec);
+            m_poolGetter.PoolGet("FireParticle",vec);
+        }
+    }
 
 }

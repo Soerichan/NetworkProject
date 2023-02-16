@@ -29,10 +29,10 @@ public class PoolGetter : MonoBehaviour
         Key = "피격파티클";
         GetDic.Add(Key, poolManager.Get(prefabs[4]));
     }
-    public void PoolGet(string get)
+    public GameObject PoolGet(string get,Vector3 vec)
     {
         Key = get;
-        poolManager.NameGet(Key);
+        return poolManager.NameGet(Key,vec);
     }
     private void Start()
     {

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1965540444804949536}
   - component: {fileID: 6676891718842343364}
   - component: {fileID: 3668222671046785350}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: GroundChecker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2045,6 +2045,7 @@ GameObject:
   - component: {fileID: 6716977910464075599}
   - component: {fileID: 6716977910464075598}
   - component: {fileID: 7450355133282877163}
+  - component: {fileID: 3952890853501017808}
   - component: {fileID: 6716977910464075601}
   m_Layer: 7
   m_Name: PlayerPrefab01
@@ -2083,11 +2084,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_rigidbody: {fileID: 0}
-  m_fMovePower: 200
+  m_fMovePower: 800
   m_fRotateSpeed: 100
   m_fMaxSpeed: 5
   m_fMaxSpeedCopy: 0
-  m_fResistance: 150
+  m_fResistance: 600
   m_resistanceVector: {x: 0, y: 0, z: 0}
   m_fMaxHP: 0
   m_fNowHP: 0
@@ -2108,6 +2109,9 @@ MonoBehaviour:
   m_gFX: {fileID: 6716977911127047464}
   m_respawnPosition: {fileID: 0}
   m_fTeamNumber: 0
+  m_maskPlayer:
+    serializedVersion: 2
+    m_Bits: 128
   m_masterGroundChecker: {fileID: 3668222671046785350}
   m_fPuchTime: 0.47
   m_fDropkickTime: 0.75
@@ -2122,9 +2126,6 @@ MonoBehaviour:
   m_fDropkickAngle: 30
   m_fDropkickPower: 2
   StartPos: []
-  TeamGFX:
-  - {fileID: 6716977911237423242}
-  - {fileID: 3087468364344006274}
   m_poolManager: {fileID: 0}
   m_poolGetter: {fileID: 0}
   m_cubeManager: {fileID: 0}
@@ -2186,6 +2187,22 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &3952890853501017808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6716977910464075593}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64179f3720bbfe947b7724caa67b7c1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 0
+  m_TeleportEnabled: 0
+  m_TeleportIfDistanceGreaterThan: 3
 --- !u!114 &6716977910464075601
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2201,12 +2218,13 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  Synchronization: 3
+  Synchronization: 1
   OwnershipTransfer: 0
-  observableSearch: 0
+  observableSearch: 1
   ObservedComponents:
+  - {fileID: 6716977910464075595}
   - {fileID: 7450355133282877163}
-  - {fileID: 6716977909893451780}
+  - {fileID: 3952890853501017808}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
