@@ -10,7 +10,7 @@ public class PoolGetter : MonoBehaviour
 
     string Key;
 
-    public Dictionary<string, GameObject> GetDic = new Dictionary<string, GameObject>();
+    //public Dictionary<string, GameObject> GetDic = new Dictionary<string, GameObject>();
 
     public PoolManager poolManager;
 
@@ -36,7 +36,7 @@ public class PoolGetter : MonoBehaviour
     }
     private void Start()
     {
-        PoolAdd();
+        //PoolAdd();
         soundManager = FindObjectOfType<SoundManager>();
     }
 
