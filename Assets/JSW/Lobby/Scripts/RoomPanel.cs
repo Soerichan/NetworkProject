@@ -18,12 +18,16 @@ namespace jsw
 
         [SerializeField]
         private PlayerEntry playerEntryPrefab;
+        
+        [Header("Button")]
         [SerializeField]
         private Button redTeambutton;
         [SerializeField]
         private Button blueTeambutton;
         [SerializeField]
         private Button startButton;
+        [SerializeField]
+        private Button ShuffleButton;
 
         private List<PlayerEntry> playerEntryList;
 
@@ -70,8 +74,9 @@ namespace jsw
                 return;
 
             startButton.gameObject.SetActive(CheckPlayerReady());
+            ShuffleButton.gameObject.SetActive(!CheckPlayerReady());
         }
-
+       
         public bool CheckPlayerReady()
         {
             foreach (Player player in PhotonNetwork.PlayerList)
