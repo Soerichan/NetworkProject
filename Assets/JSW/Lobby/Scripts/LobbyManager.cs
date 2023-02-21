@@ -109,12 +109,14 @@ namespace jsw
         {
             roomPanel.UpdateRoomState();
             roomPanel.LocalPlayerPropertiesUpdated();
+            
         }
 
         public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
         {
             roomPanel.UpdateRoomState();
             roomPanel.LocalPlayerPropertiesUpdated();
+            
         }
 
         public override void OnJoinedLobby()
